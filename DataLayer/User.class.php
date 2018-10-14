@@ -41,29 +41,30 @@ class User
      * Validates user and sets sessions
      * @return mixed|string
      */
-    function login($user, $pass)
-    {
+    function login($username, $password){
         try {
-            if ($stmt = $this->dbh->prepare("SELECT * from server_user WHERE username = :username AND password = :password;")) {
-                $stmt->bindParam(":username", $user, PDO::FETCH_CLASS);
-                $stmt->bindParam(":password", $pass, PDO::FETCH_CLASS);
+            if ($stmt = $this->dbh->prepare("SELECT username, role, team, league from server_user WHERE username=:username AND password=:password")) {
+                $stmt->bindParam(":username",  $username, PDO::FETCH_CLASS);
+                $stmt->bindParam(":password", $password, PDO::FETCH_CLASS);
                 $stmt->execute();
                 $stmt->setFetchMode(PDO::FETCH_CLASS, "User");
-
                 $result = $stmt->fetch();
+                if($result != "false"){
+                    //set up all of the sessions
+                    session_start();
+                    $_SESSION['username'] = $result->username;
+                    $_SESSION['role'] = $result->role;
+                    $_SESSION['team'] = $result->team;
+                    $_SESSION['league'] = $result->league;
 
-                //set up all of the sessions
-                $_SESSION['username'] = $result->username;
-                $_SESSION['role'] = $result->role;
-                $_SESSION['team'] = $result->team;
-                $_SESSION['league'] = $result->league;
-
-                return $result->role;
+                    return $result->role;
+                }
             } else {
                 return "False";
             }
         } catch (PDOException $e) {
-            die("Error occured while trying to login");
+            die($e);
+
         }
 
     }
@@ -155,6 +156,59 @@ class User
 
         }else{
             return "No data found";
+        }
+    }
+
+    function selectUsers()
+    {
+        try {
+            if ($stmt = $this->dbh->prepare("SELECT server_user.username, server_role.role, server_user.team, server_user.league
+                                                       FROM server_user
+                                                       INNER JOIN server_roles 
+                                                       ON server_user.role=server_role.id")) {
+                $result = array();
+                $stmt->execute();
+                $stmt->setFetchMode(PDO::FETCH_CLASS, "User");
+                $result[] = $stmt->fetch();
+                $bigString = "
+                    <div class=\"row\">
+                        <div class=\"col s12 m6\">
+                          <div class=\"card blue-grey darken-1\">
+                            <div class=\"card-content white-text\">
+                              <span class=\"card-title\">All Users</span>
+                                <table>
+                                    <thead>
+                                      <tr>
+                                          <th>Username</th>
+                                          <th>Role</th>
+                                          <th>Team</th>
+                                          <th>League</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>";
+                              foreach($result as $row){
+                                $bigString .= "
+                                    <tr>
+                                        <td>{$row->username}</td>
+                                        <td>{$row->role}</td>
+                                        <td>{$row->team}</td>
+                                        <td>{$row->league}</td>
+                                    </tr>
+                                ";
+                              }
+                              $bigString .= "</tbody>
+                            </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                ";
+                 return $bigString;
+            } else {
+                return "False";
+            }
+        } catch (PDOException $e) {
+            die("Error occured while trying to login");
         }
     }
 
