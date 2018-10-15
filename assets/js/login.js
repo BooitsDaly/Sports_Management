@@ -2,11 +2,6 @@
 $("#btnLogin").on('click', function(){
     //get the values fro the text fields
     var formData = $("#loginForm").serialize();
-    console.log(formData);
-    //send them for authentication -- ajax
-    // myXHR('post',formData,'./BuisnessLayer/BLLogin.php').done(function(){
-    //     console.log("sent data");
-    // });
     $.ajax({
         url: 'BuisnessLayer/BLLogin.php',
         type: 'POST',

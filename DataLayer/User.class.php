@@ -57,6 +57,7 @@ class User
                     $_SESSION['team'] = $result->team;
                     $_SESSION['league'] = $result->league;
 
+                    $this->dbh = null;
                     return $result->role;
                 }
             } else {
@@ -75,25 +76,27 @@ class User
      *
      */
 
-    function addUser($user, $pass, $team, $league)
+    function addUser($user, $pass, $team, $league, $role)
     {
         try {
             if ($stmt = $this->dbh->prepare("INSERT INTO server_user (username, role, password, team, league)
                                             VALUES (:user , :role, :pass, :team, :league)")) {
-                $result = array();
-                $stmt->bindParam(":user", $user, PDO::FETCH_CLASS);
-                $stmt->bindParam(":role", $role, PDO::FETCH_CLASS);
-                $stmt->bindParam(":pass", $pass, PDO::FETCH_CLASS);
-                $stmt->bindParam(":team", $team, PDO::FETCH_CLASS);
-                $stmt->bindParam(":league", $league, PDO::FETCH_CLASS);
+                $stmt->bindParam(":user", $user);
+                $stmt->bindParam(":role", $role);
+                $stmt->bindParam(":pass", $pass);
+                $stmt->bindParam(":team", $team);
+                $stmt->bindParam(":league", $league);
                 $stmt->execute();
+                return "Success!";
+            }else{
+                return "fail";
             }
         } catch (PDOException $e) {
             die("Error");
         }
     }
 
-    function editUser($user, $pass, $team, $league, $newUser)
+    function editUser($user, $pass, $team, $league,$role, $newUser)
     {
         try {
             if ($stmt = $this->dbh->prepare("UPDATE server_user
@@ -106,10 +109,13 @@ class User
                 $stmt->bindParam(":league", $league);
                 $stmt->bindParam(":newUser", $newUser);
                 $stmt->execute();
+                return "Success!";
+            }else{
+                return "Failed!";
             }
 
         } catch (PDOException $e) {
-            die("Error");
+            die($e);
         }
     }
 
@@ -120,6 +126,10 @@ class User
                                                 WHERE username = :username")) {
                 $stmt->bindParam(":username", $user);
                 $stmt->execute();
+                $this->dbh=null;
+                return "Success!";
+            }else{
+                return "failed";
             }
         } catch (PDOException $e) {
             die("Error");
@@ -162,53 +172,63 @@ class User
     function selectUsers()
     {
         try {
-            if ($stmt = $this->dbh->prepare("SELECT server_user.username, server_role.role, server_user.team, server_user.league
-                                                       FROM server_user
-                                                       INNER JOIN server_roles 
-                                                       ON server_user.role=server_role.id")) {
+            if ($stmt = $this->dbh->prepare("SELECT server_user.username, server_roles.name, server_team.name, server_league.name
+                                                        FROM server_user
+                                                        JOIN server_roles 
+                                                        ON server_user.role=server_roles.id
+                                                        JOIN server_team
+                                                        ON server_team.id=server_user.team
+                                                        JOIN server_league
+                                                        ON server_league.id=server_user.league")) {
                 $result = array();
                 $stmt->execute();
-                $stmt->setFetchMode(PDO::FETCH_CLASS, "User");
-                $result[] = $stmt->fetch();
+
+                while($values = $stmt->fetch()){
+                    $result[] = $values;
+                }
                 $bigString = "
                     <div class=\"row\">
-                        <div class=\"col s12 m6\">
+                        <div class=\"col s12\">
                           <div class=\"card blue-grey darken-1\">
                             <div class=\"card-content white-text\">
                               <span class=\"card-title\">All Users</span>
-                                <table>
+                                <table class='highlight'>
                                     <thead>
                                       <tr>
                                           <th>Username</th>
                                           <th>Role</th>
                                           <th>Team</th>
                                           <th>League</th>
+                                          <th></th>
+                                          <th></th>
                                       </tr>
                                     </thead>
                                     <tbody>";
                               foreach($result as $row){
                                 $bigString .= "
                                     <tr>
-                                        <td>{$row->username}</td>
-                                        <td>{$row->role}</td>
-                                        <td>{$row->team}</td>
-                                        <td>{$row->league}</td>
+                                        <td id='username'>{$row['username']}</td>
+                                        <td id='role'>{$row[1]}</td>
+                                        <td id='team'>{$row[2]}</td>
+                                        <td id='league'>{$row['name']}</td>
+                                        <td><a class=\"waves-effect waves-light btn editButton modal-trigger\" href=\"#edit\">Edit</a></td>
+                                        <td><a class=\"waves-effect waves-light btn deleteButton\"><i class=\"material-icons right\">clear</i></a></td>
                                     </tr>
                                 ";
                               }
-                              $bigString .= "</tbody>
+                              $bigString .= "</tbody><a id='userAdd' href='#edit' class=\"btn-floating halfway-fab waves-effect waves-light red modal-trigger\"><i class=\"material-icons\">add</i></a>
                             </table>
                             </div>
                           </div>
                         </div>
-                      </div>
+                      </div>                    
                 ";
                  return $bigString;
             } else {
                 return "False";
             }
         } catch (PDOException $e) {
-            die("Error occured while trying to login");
+            die($e);
         }
     }
 

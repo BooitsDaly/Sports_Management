@@ -1,5 +1,5 @@
 <?php
-
+include('helper.php');
 //check if subimmted
 if($_POST['username'] != null){
     if($_POST['password'] != null){
@@ -28,21 +28,3 @@ if($_POST['username'] != null){
 
 }
 
-
-/**
- * Sanitize String
- * Helper function to sanitize inputs
- *
- * @param $var
- * @return string
- */
-
-
-//sanitize input
-function sanitizeString($var){
-    $var = trim($var);
-    $var = stripslashes($var);
-    $var = htmlentities($var);
-    $var = strip_tags($var);
-    return $var;
-}

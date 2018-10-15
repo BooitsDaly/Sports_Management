@@ -64,7 +64,7 @@
 
     <!-- JS includes -->
     <script src="./assets/js/helpers.js"></script>
-    <script src="./assets/js/index.js"></script>
+    <script src="assets/js/login.js"></script>
 
     </body>
 </html>
