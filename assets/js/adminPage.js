@@ -1,4 +1,9 @@
 $(document).ready(function(){
+    /**
+     * All of the functionality for the User portion
+     *
+     */
+
     $('select').formSelect();
     $.ajax({
         type: 'GET',
@@ -47,7 +52,6 @@ $(document).ready(function(){
         $.each(value, function(i,item){
             values[i] = item.innerHTML;
         });
-        console.log(values);
         $("#userModalHeader").html(values[0]);
         $(document).on('click', '#editSaveChanges', function(){
             //get the selections for the edit content
@@ -77,7 +81,6 @@ $(document).ready(function(){
     });
 
     $(document).on('click', '#userAdd', function(){
-        console.log('clicked on');
         $("#userModalHeader").html('');
         $(document).on('click', '#editSaveChanges', function(){
             var role = $('select#role').val();
@@ -131,8 +134,93 @@ $(document).ready(function(){
         });
     });
 
+    /**
+     * All of the functionality for the sports portion
+     *
+     */
+    $.ajax({
+        type: 'GET',
+        async: true,
+        cache: false,
+        url: './../BuisnessLayer/BLAllSports.php',
+        success: function(response){
+            $("#sportsTable").append(response);
+        }
+    });
 
+    /**
+    *click event handler for edit
+    */
+    $(document).on('click', '.editSportsButton', function(){
+        var value = $(this).closest('tr').find('td');
+        var values = [];
+        $.each(value, function(i,item){
+            values[i] = item.innerHTML;
+        });
+        $(document).on('click','#sportsSave',function(){
+            var ID = $("#editSportID").val();
+            var sportName = $("#editSportName").val();
+            var formData= "oldID="+values[0]+"&newID="+ ID+ "&sportName=" + sportName;
+            $.ajax({
+                type: 'POST',
+                async: true,
+                cache: false,
+                data: formData,
+                url: './../BuisnessLayer/BLeditSports.php',
+                success: function(response){
+                    if(response == "Success!"){
+                        window.location.reload();
+                    }
+                }
+            });
+        });
+    });
 
+    /**
+     *click event handler for delete
+     */
+    $(document).on('click', '.deleteSportsButton', function(){
+        var value = $(this).closest('tr').find('td');
+        var values = [];
+        $.each(value, function(i,item){
+            values[i] = item.innerHTML;
+        });
+        var formData= "ID="+ values[0];
+        $.ajax({
+            type: 'POST',
+            async: true,
+            cache: false,
+            data: formData,
+            url: './../BuisnessLayer/BLdeleteSports.php',
+            success: function(response){
+                if(response == "Success!"){
+                    window.location.reload();
+                }
+            }
+        });
+
+    });
+
+    $(document).on('click', '#editSports', function(){
+        $(document).on('click','#sportsSave',function(){
+            var ID = $("#editSportID").val();
+            var sportName = $("#editSportName").val();
+            var formData= "ID="+ ID+ "&sportName=" + sportName;
+            $.ajax({
+                type: 'POST',
+                async: true,
+                cache: false,
+                data: formData,
+                url: './../BuisnessLayer/BLaddSports.php',
+                success: function(response){
+                    $('body').append(response);
+                    if(response == "Success!"){
+                        window.location.reload();
+                    }
+                }
+            });
+        });
+    });
 
 
 });

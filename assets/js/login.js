@@ -11,7 +11,7 @@ $("#btnLogin").on('click', function(){
         success:function(response){
             console.log(response);
             if(response == 1){
-                window.location.href = "./PresentationLayer/adminPage.php";
+                window.location.href = "PresentationLayer/admin.php";
             }else if(response == 2){
 
             }else if(response == 3 || response == 4){

@@ -87,6 +87,7 @@ class User
                 $stmt->bindParam(":team", $team);
                 $stmt->bindParam(":league", $league);
                 $stmt->execute();
+                $this->dbh = null;
                 return "Success!";
             }else{
                 return "fail";
@@ -109,6 +110,7 @@ class User
                 $stmt->bindParam(":league", $league);
                 $stmt->bindParam(":newUser", $newUser);
                 $stmt->execute();
+                $this->dbh = null;
                 return "Success!";
             }else{
                 return "Failed!";
@@ -145,6 +147,7 @@ class User
                 $stmt->execute();
                 $stmt->setFetchMode(PDO::FETCH_CLASS, "User");
                 $result[] = $stmt->fetch();
+                $this->dbh = null;
                 return $result;
             } else {
                 return "False";
@@ -223,6 +226,7 @@ class User
                         </div>
                       </div>                    
                 ";
+                $this->dbh = null;
                  return $bigString;
             } else {
                 return "False";
