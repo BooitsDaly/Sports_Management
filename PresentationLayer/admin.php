@@ -170,6 +170,14 @@ function leagueManager(){
                 <a id='seasonSave' href=\"#!\" class=\"modal-close waves-effect waves-green btn-flat\">Save Changes</a>
             </div>
         </div>
+        <div id=\"SLSeasonsTable\"></div>
+        <div id=\"editSLSeasons\" class=\"modal\">
+            <div id=\"SLSeasonModalContent\" class=\"modal-content\">
+                <h4 id=\"SLSeasonModalHeader\"></h4>
+                <!-- get the available seasons sport league -->
+            </div>
+            
+        </div>
     ";
 }
 

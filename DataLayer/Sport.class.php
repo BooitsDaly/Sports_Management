@@ -47,6 +47,26 @@
                 die($e);
             }
         }
+        function getSportNames(){
+            try{
+                if($stmt = $this->dbh->prepare("SELECT name FROM server_sport")){
+                    $stmt->execute();
+                    $stmt->setFetchMode(PDO::FETCH_CLASS,'Sport');
+                    $result = array();
+                    while($row = $stmt->fetch()){
+                        $result[] = $row->name;
+                    }
+                    $this->dbh = null;
+                    return $result;
+
+                }else{
+                    $this->dbh = null;
+                    return "Failed";
+                }
+            }catch(PDOException $e){
+                die($e);
+            }
+        }
 
         function getIDs(){
             try{
