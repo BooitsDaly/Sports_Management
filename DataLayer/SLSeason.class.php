@@ -36,12 +36,14 @@ class SLSeason{
         }
     }
 
-    function deleteSLSeason($sport)
+    function deleteSLSeason($sport, $season, $league)
     {
         try {
-            if ($stmt = $this->dbh->prepare("DELETE from server_slseason
-                                                WHERE sport = :sport")) {
+            if ($stmt = $this->dbh->prepare("DELETE FROM server_slseason
+                                                WHERE sport=:sport AND season=:season AND league=:league")) {
                 $stmt->bindParam(":sport", $sport);
+                $stmt->bindParam(":season", $season);
+                $stmt->bindParam(":league", $league);
                 $stmt->execute();
                 $this->dbh=null;
                 return "Success!";
@@ -53,15 +55,17 @@ class SLSeason{
         }
     }
 
-    function editSLSeason($newSport,$oldSport,$season, $league){
+    function editSLSeason($newSport,$oldSport,$season, $league, $oldSeason, $oldLeague){
         try{
             if($stmt = $this->dbh->prepare("UPDATE server_slseason
                                                 SET sport=:newSport, season=:season, league=:league
-                                                WHERE sport=:oldSport")){
+                                                WHERE sport=:oldSport AND season=:oldSeason AND league=:oldLeague")){
                 $stmt->bindParam(":newSport", $newSport);
                 $stmt->bindParam(":season", $season);
                 $stmt->bindParam(":oldSport", $oldSport);
                 $stmt->bindParam(":league", $league);
+                $stmt->bindParam(":oldSeason", $oldSeason);
+                $stmt->bindParam(":oldLeague", $oldLeague);
                 $stmt->execute();
                 $this->dbh = null;
                 return "Success!";
@@ -104,7 +108,7 @@ class SLSeason{
                 while($row = $stmt->fetch()){
                     $result[] = $row->sport;
                 }
-                $this->dbh = null;
+
                 return $result;
 
             }else{
@@ -114,6 +118,23 @@ class SLSeason{
         }catch(PDOException $e){
             die($e);
         }
+    }
+
+    function getModals($data){
+        $bigString = "<div class=\"input-field col s12\">
+    <select id='teamsls'>
+        <option value=\"\" disabled selected>Select Sport/League/Season Combination</option>";
+        foreach($data as $row) {
+            $bigString .= "
+        <option value='{$row->sport},{$row->league},{$row->season}'>Sport: {$row->sport}, League: {$row->league},Season: {$row->season}</option>
+        ";
+        }
+        $bigString .= "
+        </select>
+        <label>Sports/League/Season</label>
+    </div>";
+        $this->dbh = null;
+        return $bigString;
     }
 
     function getAllSLSeasonsAsTable($result){
@@ -148,6 +169,7 @@ class SLSeason{
                   </div>
                 </div>
               </div>";
+        $this->dbh = null;
         return $bigString;
     }
 

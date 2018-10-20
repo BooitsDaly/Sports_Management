@@ -178,9 +178,43 @@ function leagueManager(){
             </div>
             
         </div>
+        <div id='teamTable'></div>
+        <!-- Modal Structure -->
+        <div id=\"editTeams\" class=\"modal\">
+            <div id=\"teamModalContent\" class=\"modal-content\">
+                
+                <div class=\"input-field col s12\">
+                    <input id=\"teamName\" class=\"validate\" type=\"text\">
+                    <label for=\"teamName\">Team Name</label>
+                </div>
+                <div class=\"input-field col s12\">
+                    <input id=\"teamMascot\" class=\"validate\" type=\"text\">
+                    <label for=\"teamMascot\">Mascot</label>
+                </div>
+                <div class=\"input-field col s12\">
+                    <input id=\"teamPicture\" class=\"validate\" type=\"text\">
+                    <label for=\"teamPicture\">Team Picture</label>
+                </div>
+                <div class=\"input-field col s12\">
+                    <input id=\"homeColor\" class=\"validate\" type=\"text\">
+                    <label for=\"homeColor\">Home Color</label>
+                </div>
+                <div id='modalSelectsTeam'></div>
+                <div class=\"input-field col s12\">
+                    <input id=\"awayColor\" class=\"validate\" type=\"text\">
+                    <label for=\"awayColor\">Away Color</label>
+                </div>
+                <div class=\"input-field col s12\">
+                    <input id=\"maxplayers\" class=\"validate\" type=\"number\">
+                    <label for=\"maxplayers\">Max Players</label>
+                </div>
+            </div>
+            <div class=\"modal-footer\">
+                <a id='teamSave' href=\"#!\" class=\"modal-close waves-effect waves-green btn-flat\">Save Changes</a>
+            </div>
+        </div>
     ";
 }
 
-?>
 
 
