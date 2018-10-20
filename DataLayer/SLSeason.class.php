@@ -120,9 +120,9 @@ class SLSeason{
         }
     }
 
-    function getModals($data){
+    function getModals($data, $id){
         $bigString = "<div class=\"input-field col s12\">
-    <select id='teamsls'>
+    <select id='{$id}'>
         <option value=\"\" disabled selected>Select Sport/League/Season Combination</option>";
         foreach($data as $row) {
             $bigString .= "

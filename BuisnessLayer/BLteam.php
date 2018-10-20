@@ -63,7 +63,7 @@
             if($_SESSION['league'] != null){
                 $data = $db->getTeams($_SESSION['league']);
             }else{
-                $data = $db->getTeams();
+                $data = $db->getAllTeams();
             }
             $results = $db->getAllTeamsAsTable($data);
             echo $results;

@@ -43,39 +43,46 @@
 
         function getTeams($id){
             try{
-                if($id){
-                    if($stmt = $this->dbh->prepare("SELECT * from server_team WHERE league=:id")){
-                        $stmt->bindParam(':id',$id,PDO::FETCH_CLASS);
-                        $stmt->setFetchMode(PDO::FETCH_CLASS, "Team");
-                        $stmt->execute();
-                        $result = array();
-                        while($row = $stmt->fetch()){
-                            $result[] = $row;
-                        }
-                        $this->dbh = null;
-                        return $result;
-                    }else {
-                        $this->dbh = null;
-                        return "failed";
+                if($stmt = $this->dbh->prepare("SELECT * from server_team WHERE league=:id")){
+                    $stmt->bindParam(':id',$id,PDO::FETCH_CLASS);
+                    $stmt->setFetchMode(PDO::FETCH_CLASS, "Team");
+                    $stmt->execute();
+                    $result = array();
+                    while($row = $stmt->fetch()){
+                        $result[] = $row;
                     }
-                }else{
-                    if($stmt = $this->dbh->prepare("SELECT * from server_team")){
-                        $stmt->setFetchMode(PDO::FETCH_CLASS, "Team");
-                        $result = array();
-                        while($row = $stmt->fetch()){
-                            $result[] = $row;
-                        }
-                        $this->dbh = null;
-                        return $result;
-                    }else{
-                        $this->dbh = null;
-                        return "failed";
-                    }
+                    $this->dbh = null;
+                    return $result;
+                }else {
+                    $this->dbh = null;
+                    return "failed";
                 }
 
             }catch(PDOException $e){
                 die($e);
             }
+        }
+
+        function getAllTeams(){
+            try{
+                if($stmt = $this->dbh->prepare("SELECT * from server_team")){
+                    $stmt->setFetchMode(PDO::FETCH_CLASS, "Team");
+                    $stmt->execute();
+                    $result = array();
+                    while($row = $stmt->fetch()){
+                        $result[] = $row;
+                    }
+                    $this->dbh = null;
+                    return $result;
+                }else{
+                    $this->dbh = null;
+                    return "failed";
+                }
+                }
+            catch(PDOException $e){
+                die($e);
+            }
+
         }
 
         function addTeam($name,$mascot,$sport,$league,$season,$picture,$homecolor,$awaycolor,$maxplayers){
@@ -190,6 +197,23 @@
                   </div>
                 </div>
               </div>";
+            return $bigString;
+        }
+
+        function getModals($data, $id){
+            $bigString = "<div class=\"input-field col s12\">
+    <select id='{$id}'>
+        <option value=\"\" disabled selected>Select Team</option>";
+            foreach($data as $row) {
+                $bigString .= "
+        <option value='{$row->id}'>{$row->name}</option>
+        ";
+            }
+
+            $bigString .= "
+        </select>
+        <label>Team</label>
+    </div>";
             return $bigString;
         }
     }

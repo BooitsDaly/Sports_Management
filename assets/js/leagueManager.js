@@ -76,6 +76,28 @@ $(document).ready(function(){
         }
     });
 
+    //Games
+    $.ajax({
+        type: 'POST',
+        async: true,
+        cache: false,
+        data: "call=view",
+        url: './../BuisnessLayer/BLschedules.php',
+        success: function(response){
+            $("#scheduleTable").append(response);
+        }
+    });
+    //Games - Modal
+    $.ajax({
+        type: 'POST',
+        async: true,
+        cache: false,
+        data: "call=modal",
+        url: './../BuisnessLayer/BLschedules.php',
+        success: function(response){
+            $("#teamModal").append(response);
+        }
+    });
 
 
     /**
@@ -418,6 +440,122 @@ $(document).ready(function(){
      * add
      * delete
      */
+
+    //Teams - edit
+    $(document).on('click','.editScheduleButton', function() {
+        var value = $(this).closest('tr').find('td');
+        var values = [];
+        $.each(value, function(i,item){
+            values[i] = item.innerHTML;
+        });
+        var id = values[0];
+        $(document).on('click', '#scheduleSave', function () {
+            var $sls = $('select#scheduleSLS').val();
+            var splitString = $sls.split(",");
+            var $sport = splitString[0];
+            var $league = splitString[1];
+            var $season =splitString[2];
+            var hometeam = $('select#hometeam').val();
+            var awayteam = $('select#awayteam').val();
+            var homescore = $('#homeScore').val();
+            var awayscore = $('#awayScore').val();
+            var scheduled = $('#scheduleDate').val();
+            var completed = $('#completed').val();
+
+            var oldsport = values[0];
+            var oldleague = values[1];
+            var oldseason = values[2];
+            var oldhometeam = values[3];
+            var oldawayteam = values[4];
+            var oldhomescore = values[5];
+            var oldawayscore = values[6];
+            var oldscheduled = values[7];
+            var oldcompleted = values[8];
+
+
+            var formData = "call=edit&sport=" + $sport  + "&league=" + $league + "&season=" + $season + "&hometeam=" + hometeam  + "&awayteam=" + awayteam+ "&homescore=" + homescore  + "&awayscore=" + awayscore + "&scheduled=" + scheduled+ "&completed=" + completed + "&oldsport=" + oldsport  + "&oldleague=" + oldleague + "&oldseason=" + oldseason + "&oldhometeam=" + oldhometeam  + "&oldawayteam=" + oldawayteam+ "&oldhomescore=" + oldhomescore  + "&oldawayscore=" + oldawayscore + "&oldscheduled=" + oldscheduled+ "&oldcompleted=" + oldcompleted;
+
+            //create a post string
+            $.ajax({
+                url: './../BuisnessLayer/BLschedules.php',
+                type: 'POST',
+                async: false,
+                cache: false,
+                data: formData,
+                success: function (response) {
+                    console.log(response);
+                    $('body').append(response);
+                    if (response == "Success!") {
+                        window.location.reload();
+                    }
+                }
+            });
+
+        });
+    });
+
+    //Teams - Add
+    $(document).on('click','#scheduleAdd', function() {
+        $(document).on('click', '#scheduleSave', function () {
+            var $sls = $('select#scheduleSLS').val();
+            var splitString = $sls.split(",");
+            var $sport = splitString[0];
+            var $league = splitString[1];
+            var $season =splitString[2];
+            var hometeam = $('select#hometeam').val();
+            var awayteam = $('select#awayteam').val();
+            var homescore = $('#homeScore').val();
+            var awayscore = $('#awayScore').val();
+            var scheduled = $('#scheduleDate').val();
+            var completed = $('#completed').val();
+
+            var formData = "call=add&sport=" + $sport  + "&league=" + $league + "&season=" + $season + "&hometeam=" + hometeam  + "&awayteam=" + awayteam+ "&homescore=" + homescore  + "&awayscore=" + awayscore + "&scheduled=" + scheduled+ "&completed=" + completed;
+
+            //create a post string
+            $.ajax({
+                url: './../BuisnessLayer/BLschedules.php',
+                type: 'POST',
+                async: false,
+                cache: false,
+                data: formData,
+                success: function (response) {
+                    $('body').append(response);
+                    if (response == "Success!") {
+                        window.location.reload();
+                    }
+                }
+            });
+
+        });
+    });
+
+    //delete Team
+    $(document).on('click','.deleteTeamsButton', function(){
+        var value = $(this).closest('tr').find('td');
+        var values = [];
+        $.each(value, function(i,item){
+            values[i] = item.innerHTML;
+        });
+
+        var teamID = values[0];
+
+        //create a post string
+        var formData ="call=delete&id="+ teamID;
+        $.ajax({
+            url: './../BuisnessLayer/BLteam.php',
+            type: 'POST',
+            async: false,
+            cache: false,
+            data: formData,
+            success:function(response){
+                console.log(response);
+                if(response == "Success!"){
+                    window.location.reload();
+                }
+            }
+        });
+
+    });
 
 
 

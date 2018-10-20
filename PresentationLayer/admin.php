@@ -213,6 +213,38 @@ function leagueManager(){
                 <a id='teamSave' href=\"#!\" class=\"modal-close waves-effect waves-green btn-flat\">Save Changes</a>
             </div>
         </div>
+        
+        <div id='scheduleTable'></div>
+        <!-- Modal Structure -->
+        <div id=\"editSchedule\" class=\"modal\">
+            <div id=\"scheduleModalContent\" class=\"modal-content\">
+                <div id='teamModal'></div>
+                <div class=\"input-field col s12\">
+                    <input id=\"homeScore\" class=\"validate\" type=\"number\">
+                    <label for=\"homeScore\">Home Score</label>
+                </div>
+                <div class=\"input-field col s12\">
+                    <input id=\"awayScore\" class=\"validate\" type=\"number\">
+                    <label for=\"awayScore\">Away Score</label>
+                </div>
+                <div class=\"input-field col s12\">
+                    <input id=\"scheduleDate\" class=\"validate\" type=\"date\">
+                    <label for=\"scheduleDate\">Date</label>
+                </div>
+                <div class=\"input-field col s12\">
+                <select id='completed'>
+                  <option value=\"\" disabled selected>Game Completed?</option>
+                  <option value=\"1\">Yes</option>
+                  <option value=\"0\">No</option>
+                </select>
+                <label>Completed</label>
+              </div>
+            </div>
+            <div class=\"modal-footer\">
+                <a id='scheduleSave' href=\"#!\" class=\"modal-close waves-effect waves-green btn-flat\">Save Changes</a>
+            </div>
+        </div>
+        
     ";
 }
 
