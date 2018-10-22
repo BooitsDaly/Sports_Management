@@ -6,10 +6,11 @@ $(document).ready(function(){
 
     $('select').formSelect();
     $.ajax({
-        type: 'GET',
+        type: 'POST',
         async: true,
         cache: false,
-        url: './../BuisnessLayer/BLAdminUser.php',
+        data: "call=view",
+        url: './../BuisnessLayer/BLuser.php',
         success: function(response){
             $("#userTable").append(response);
         }
@@ -62,9 +63,9 @@ $(document).ready(function(){
             var password = $("#editPassword").val();
             var oldUser = values[0];
             //create a post string
-            var formData = "newUser="+username+"&password="+password+"&role="+role+"&league="+ league +"&team="+team+"&oldUser="+ oldUser;
+            var formData = "call=edit&newUser="+username+"&password="+password+"&role="+role+"&league="+ league +"&team="+team+"&oldUser="+ oldUser;
             $.ajax({
-                url: './../BuisnessLayer/BLeditUser.php',
+                url: './../BuisnessLayer/BLuser.php',
                 type: 'POST',
                 async: false,
                 cache: false,
@@ -89,15 +90,17 @@ $(document).ready(function(){
             var username = $("#editUsername").val();
             var password = $("#editPassword").val();
             //create a post string
-            var formData = "username="+username+"&password="+password+"&role="+role+"&league="+ league +"&team="+team;
+            var formData = "call=add&username="+username+"&password="+password+"&role="+role+"&league="+ league +"&team="+team;
             $.ajax({
-                url: './../BuisnessLayer/BLaddUser.php',
+                url: './../BuisnessLayer/BLuser.php',
                 type: 'POST',
                 async: false,
                 cache: false,
                 data: formData,
                 success:function(response){
+                    $('body').append(response);
                     if(response == "Success!"){
+
                         window.location.reload();
                     }
 
@@ -108,7 +111,6 @@ $(document).ready(function(){
     });
 
     $(document).on('click', '.deleteButton', function(){
-        console.log('got clicked on');
         var value = $(this).closest('tr').find('td');
         var values = [];
         $.each(value, function(i,item){
@@ -116,10 +118,9 @@ $(document).ready(function(){
         });
         console.log(values);
         //create a post string
-        var formData = "username="+values[0];
-        console.log(formData);
+        var formData = "call=delete&username="+values[0];
         $.ajax({
-            url: './../BuisnessLayer/BLDeleteUser.php',
+            url: './../BuisnessLayer/BLuser.php',
             type: 'POST',
             async: false,
             cache: false,

@@ -124,6 +124,42 @@
                 die($e);
             }
         }
+
+        function getATeam($team){
+            try{
+                if($stmt = $this->dbh->prepare("SELECT * from server_team WHERE team=:team")){
+                    $stmt->bindParam(':team',$team, PDO::FETCH_CLASS);
+                    $stmt->execute();
+                    $stmt->setFetchMode(PDO::FETCH_CLASS, "team");
+                    $result = array();
+                    while($row = $stmt->fetch()){
+                        $result[] = $row;
+                    }
+                    return $result;
+                }else{
+                    $this->dbh = null;
+                    return "failed";
+                }
+            }catch(PDOException $e){
+                die($e);
+            }
+
+        }
+
+        function getTeamAsList($data){
+            return "<ul class=\"collection with-header\">
+                        <li class=\"collection-header\"><h4>{$data->name}</h4></li>
+                        <li class=\"collection-item\">Mascot: {$data->mascot}</li>
+                        <li class=\"collection-item\">Sport: {$data->sport}</li>
+                        <li class=\"collection-item\">League: {$data->league}</li>
+                        <li class=\"collection-item\">Season: {$data->season}</li>
+                        <li class=\"collection-item\">Picture: {$data->picture}</li>
+                        <li class=\"collection-item\">Home Color: {$data->homecolor}</li>
+                        <li class=\"collection-item\">Away Color: {$data->awaycolor}</li>
+                        <li class=\"collection-item\">Max Players: {$data->maxplayers}</li>
+                    </ul>";
+        }
+
         function editTeam($id,$name,$mascot,$sport,$league,$season,$picture,$homecolor,$awaycolor,$maxplayers){
             try {
                 if ($stmt = $this->dbh->prepare("UPDATE server_team

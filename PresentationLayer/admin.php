@@ -9,19 +9,37 @@ if(isset($_SESSION['role'])){
     if($_SESSION['role'] == 1){
         pageheader();
         title("Admin Page");
+        userTable();
         adminPage();
         leagueManager();
+        teamManager();
         footer();
     }elseif($_SESSION['role'] == 2){
+        pageheader();
+        title("League Manager Page");
+        userTable();
+        leagueManager();
+        teamManager();
+        footer();
 
     }elseif($_SESSION['role'] == 3){
+        pageheader();
+        title("Team Manager Page");
+        userTable();
+        teamManager();
+        footer();
 
     }
     elseif($_SESSION['role'] == 4){
+        pageheader();
+        title("Coach");
+        userTable();
+        teamManager();
+        footer();
 
     }
     elseif($_SESSION['role'] == 5){
-
+        header("./teamPage.php");
     }else{
         header("Location: ./../index.php");
     }
@@ -51,9 +69,16 @@ function pageheader(){
     </header>
     <body>
     <!-- Created header -->
-    <nav>
-        <div class=\"banner nav-wrapper\">
-            <button id=\"logout\" class=\"btn\">LOGOUT</button>
+    <nav class=\"navbar-fixed\">
+        <div class=\"nav-wrapper\">
+            <div class=\"banner nav-wrapper right\">
+                <button id=\"logout\" class=\"btn\">LOGOUT</button>
+            </div>
+          <ul class=\"left\">
+            <li class=\"active\"><a href=\"admin.php\">Admin Page</a></li>
+            <li><a href=\"teamPage.php\">Team Page</a></li>
+            <li ><a href=\"schedule.php\">Schedule Page</a></li>
+          </ul>
         </div>
     </nav>
 
@@ -73,6 +98,8 @@ function footer(){
         <script type=\"text/javascript\" src=\"../assets/js/adminPage.js\"></script>
         <script type=\"text/javascript\" src=\"../assets/js/logout.js\"></script>
         <script type=\"text/javascript\" src=\"../assets/js/leagueManager.js\"></script>
+        <script type=\"text/javascript\" src=\"../assets/js/teamManager.js\"></script>
+
     </body>
 </html>
     ";
@@ -88,9 +115,9 @@ function title($title){
         ";
 }
 
-function adminPage(){
+function userTable(){
     echo"
-
+    
         <!-- The sections below will be dynamically created once get information out of the database -->
         <div id=\"userTable\"></div>
         <!-- Modal Structure -->
@@ -120,8 +147,11 @@ function adminPage(){
                     <label>Role</label>
                 </div>
             </div>
-        </div>
+        </div>";
+}
 
+function adminPage(){
+    echo"
         <!-- Sports Section -->
         <!-- Sports Section -->
         <div id=\"sportsTable\"></div>
@@ -247,6 +277,27 @@ function leagueManager(){
         
     ";
 }
+function teamManager(){
+    echo "
+        <div id='positionTable'></div>
+            <!-- Modal Structure -->
+        <div id=\"editPosition\" class=\"modal\">
+            <div id=\"positionModalContent\" class=\"modal-content\">
+                <div id='positionModal'></div>
+                <div class=\"input-field col s12\">
+                    <input id=\"position\" class=\"validate\" type=\"text\">
+                    <label for=\"position\">Position</label>
+                </div>
+              </div>
+            <div class=\"modal-footer\">
+                <a id='positionSave' href=\"#!\" class=\"modal-close waves-effect waves-green btn-flat\">Save Changes</a>
+            </div>
+        </div>
+        
+        <div id='playerTable'></div>
+        ";
+}
+
 
 
 

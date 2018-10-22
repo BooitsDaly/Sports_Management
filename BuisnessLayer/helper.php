@@ -19,5 +19,5 @@ function sanitizeString($var){
 
 
 function errorMessage(){
-    echo "<h1>Please Fill out the whole form</h1>";
+    echo "<script> alert('Please Fill out the whole form');</script>";
 }

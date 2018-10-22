@@ -93,7 +93,7 @@ class User
                 return "fail";
             }
         } catch (PDOException $e) {
-            die("Error");
+            die($e);
         }
     }
 
@@ -134,7 +134,7 @@ class User
                 return "failed";
             }
         } catch (PDOException $e) {
-            die("Error");
+            die($e);
         }
     }
 
@@ -189,7 +189,79 @@ class User
                 while($values = $stmt->fetch()){
                     $result[] = $values;
                 }
-                $bigString = "
+                $this->dbh = null;
+                return $result;
+            } else {
+                return "False";
+            }
+        } catch (PDOException $e) {
+            die($e);
+        }
+    }
+
+    function selectUsersByRole($role, $role2){
+        try {
+            if ($stmt = $this->dbh->prepare("SELECT server_user.username, server_roles.name, server_team.name, server_league.name
+                                                        FROM server_user
+                                                        JOIN server_roles 
+                                                        ON server_user.role=server_roles.id
+                                                        JOIN server_team
+                                                        ON server_team.id=server_user.team
+                                                        JOIN server_league
+                                                        ON server_league.id=server_user.league
+                                                        WHERE  role=:role OR role=:role2")) {
+                $stmt->bindParam(':role',$role);
+                $stmt->bindParam(':role2',$role2);
+
+                $result = array();
+                $stmt->execute();
+
+                while($values = $stmt->fetch()){
+                    $result[] = $values;
+                }
+                $this->dbh = null;
+                return $result;
+            } else {
+                return "False";
+            }
+        } catch (PDOException $e) {
+            die($e);
+        }
+    }
+
+    function selectUsersByTeam($role, $role2, $role3, $team){
+        try {
+            if ($stmt = $this->dbh->prepare("SELECT server_user.username, server_roles.name, server_team.name, server_league.name
+                                                        FROM server_user
+                                                        JOIN server_roles 
+                                                        ON server_user.role=server_roles.id
+                                                        JOIN server_team
+                                                        ON server_team.id=server_user.team
+                                                        JOIN server_league
+                                                        ON server_league.id=server_user.league
+                                                        WHERE  (role=:role OR role=:role2 OR role=:role3) AND team=:team ")) {
+                $stmt->bindParam(':role',$role);
+                $stmt->bindParam(':role2',$role2);
+                $stmt->bindParam(':role3',$role3);
+                $stmt->bindParam(':team',$team);
+                $result = array();
+                $stmt->execute();
+
+                while($values = $stmt->fetch()){
+                    $result[] = $values;
+                }
+                $this->dbh = null;
+                return $result;
+            } else {
+                return "False";
+            }
+        } catch (PDOException $e) {
+            die($e);
+        }
+    }
+
+    function getTable($result){
+        $bigString = "
                     <div class=\"row\">
                         <div class=\"col s12\">
                           <div class=\"card blue-grey darken-1\">
@@ -207,8 +279,8 @@ class User
                                       </tr>
                                     </thead>
                                     <tbody>";
-                              foreach($result as $row){
-                                $bigString .= "
+        foreach($result as $row){
+            $bigString .= "
                                     <tr>
                                         <td id='username'>{$row['username']}</td>
                                         <td id='role'>{$row[1]}</td>
@@ -218,22 +290,15 @@ class User
                                         <td><a class=\"waves-effect waves-light btn deleteButton\"><i class=\"material-icons right\">clear</i></a></td>
                                     </tr>
                                 ";
-                              }
-                              $bigString .= "</tbody><a id='userAdd' href='#edit' class=\"btn-floating halfway-fab waves-effect waves-light red modal-trigger\"><i class=\"material-icons\">add</i></a>
+        }
+        $bigString .= "</tbody><a id='userAdd' href='#edit' class=\"btn-floating halfway-fab waves-effect waves-light red modal-trigger\"><i class=\"material-icons\">add</i></a>
                             </table>
                             </div>
                           </div>
                         </div>
                       </div>                    
                 ";
-                $this->dbh = null;
-                 return $bigString;
-            } else {
-                return "False";
-            }
-        } catch (PDOException $e) {
-            die($e);
-        }
+        return $bigString;
     }
 
 

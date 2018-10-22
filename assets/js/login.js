@@ -9,15 +9,14 @@ $("#btnLogin").on('click', function(){
         cache: false,
         data: formData,
         success:function(response){
-            console.log(response);
             if(response == 1){
                 window.location.href = "PresentationLayer/admin.php";
             }else if(response == 2){
-
+                window.location.href = "PresentationLayer/admin.php";
             }else if(response == 3 || response == 4){
-
+                window.location.href = "PresentationLayer/admin.php";
             }else if(response == 5){
-
+                window.location.href = "PresentationLayer/admin.php";
             }else if(response == "error"){
                 //message that login failed
                 $("body").append("<h1> Please fill all fields </h1>");

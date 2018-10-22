@@ -121,7 +121,6 @@ $(document).ready(function(){
 
     //add Seasons
     $(document).on('click','#seasonAdd',function(){
-        console.log("I got clicked 1");
         $(document).on('click', '#seasonSave', function(){
             var id = $("#editSeasonID").val();
             var year = $("#editSeasonYear").val();
@@ -287,7 +286,6 @@ $(document).ready(function(){
             cache: false,
             data: formData,
             success:function(response){
-                console.log(response);
                 if(response == "Success!"){
                     window.location.reload();
                 }
@@ -395,7 +393,6 @@ $(document).ready(function(){
                 cache: false,
                 data: formData,
                 success: function (response) {
-                    console.log(response);
                     if (response == "Success!") {
                         window.location.reload();
                     }
@@ -406,19 +403,27 @@ $(document).ready(function(){
     });
 
     //delete Team
-    $(document).on('click','.deleteTeamsButton', function(){
+    $(document).on('click','.deleteScheduleButton', function(){
         var value = $(this).closest('tr').find('td');
         var values = [];
         $.each(value, function(i,item){
             values[i] = item.innerHTML;
         });
 
-        var teamID = values[0];
+        var sport = values[0];
+        var league = values[1];
+        var season = values[2];
+        var hometeam = values[3];
+        var awayteam = values[4];
+        var homescore = values[5];
+        var awayscore = values[6];
+        var scheduled = values[7];
+        var completed = values[8];
 
         //create a post string
-        var formData ="call=delete&id="+ teamID;
+        var formData = "call=delete&sport=" + sport  + "&league=" + league + "&season=" + season + "&hometeam=" + hometeam  + "&awayteam=" + awayteam+ "&homescore=" + homescore  + "&awayscore=" + awayscore + "&scheduled=" + scheduled+ "&completed=" + completed;
         $.ajax({
-            url: './../BuisnessLayer/BLteam.php',
+            url: './../BuisnessLayer/BLschedules.php',
             type: 'POST',
             async: false,
             cache: false,
@@ -483,8 +488,6 @@ $(document).ready(function(){
                 cache: false,
                 data: formData,
                 success: function (response) {
-                    console.log(response);
-                    $('body').append(response);
                     if (response == "Success!") {
                         window.location.reload();
                     }
@@ -548,7 +551,6 @@ $(document).ready(function(){
             cache: false,
             data: formData,
             success:function(response){
-                console.log(response);
                 if(response == "Success!"){
                     window.location.reload();
                 }

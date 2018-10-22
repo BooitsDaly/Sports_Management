@@ -72,6 +72,63 @@ if(isset($_POST['call'])){
         echo $results;
 
     }elseif($call == 'delete'){
+        if(isset($_POST['sport'])){
+            if(isset($_POST['league'])){
+                if(isset($_POST['season'])){
+                    if(isset($_POST['hometeam'])){
+                        if(isset($_POST['awayteam'])){
+                            if(isset($_POST['homescore'])){
+                                if(isset($_POST['awayscore'])){
+                                    if(isset($_POST['scheduled'])){
+                                        if(isset($_POST['completed'])){
+                                            $sport = sanitizeString($_POST['sport']);
+                                            $league = sanitizeString($_POST['league']);
+                                            $season = sanitizeString($_POST['season']);
+                                            $hometeam = sanitizeString($_POST['hometeam']);
+                                            $awayteam = sanitizeString($_POST['awayteam']);
+                                            $homescore = sanitizeString($_POST['homescore']);
+                                            $awayscore = sanitizeString($_POST['awayscore']);
+                                            $scheduled = sanitizeString($_POST['scheduled']);
+                                            $completed = sanitizeString($_POST['completed']);
+                                            $db = new Schedule();
+                                            $result = $db->deleteSchedule($sport,$league,$season,$hometeam,$awayteam,$homescore,$awayscore,$scheduled,$completed);
+                                            echo $result;
+
+
+                                        }else{
+                                            errorMessage();
+                                        }
+
+                                    }else{
+                                        errorMessage();
+                                    }
+
+                                }else{
+                                    errorMessage();
+                                }
+
+                            }else{
+                                errorMessage();
+                            }
+
+                        }else{
+                            errorMessage();
+                        }
+
+                    }else{
+                        errorMessage();
+                    }
+
+
+                }else{
+                    errorMessage();
+                }
+            }else{
+                errorMessage();
+            }
+        }else{
+            errorMessage();
+        }
 
     }elseif($call == 'edit'){
         if(isset($_POST['sport'])){

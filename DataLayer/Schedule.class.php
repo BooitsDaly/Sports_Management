@@ -111,6 +111,30 @@ class Schedule{
         }
     }
 
+    function deleteSchedule($sport,$league,$season,$hometeam,$awayteam,$homescore,$awayscore,$scheduled,$completed){
+        try {
+            if ($stmt = $this->dbh->prepare("DELETE FROM server_schedule 
+                WHERE sport = :sport AND league = :league AND season = :season AND hometeam = :hometeam AND awayteam = :awayteam AND homescore = :homescore AND awayscore = :awayscore AND completed = :completed")){
+                $stmt->bindParam(":sport", $sport);
+                $stmt->bindParam(":league", $league);
+                $stmt->bindParam(":season", $season);
+                $stmt->bindParam(":hometeam", $hometeam);
+                $stmt->bindParam(":awayteam", $awayteam);
+                $stmt->bindParam(":homescore", $homescore);
+                $stmt->bindParam(":awayscore", $awayscore);
+                $stmt->bindParam(":completed", $completed);
+                $stmt->execute();
+                $this->dbh = null;
+                return "Success!";
+            }else{
+                $this->dbh = null;
+                return "fail";
+            }
+        } catch (PDOException $e) {
+            die($e);
+        }
+    }
+
     function getAllGamesAsTable($result){
         $bigString="<div class=\"row\">
                 <div class=\"col m12\">
