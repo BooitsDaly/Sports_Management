@@ -16,7 +16,7 @@ $("#btnLogin").on('click', function(){
             }else if(response == 3 || response == 4){
                 window.location.href = "PresentationLayer/admin.php";
             }else if(response == 5){
-                window.location.href = "PresentationLayer/admin.php";
+                window.location.href = "PresentationLayer/teamPage.php";
             }else if(response == "error"){
                 //message that login failed
                 $("body").append("<h1> Please fill all fields </h1>");

@@ -18,6 +18,9 @@ class Schedule{
     private $completed;
     private $dbh;
 
+    /**
+     * Schedule constructor.
+     */
     function __construct(){
         try {
             // open a connection
@@ -31,6 +34,9 @@ class Schedule{
 
     }
 
+    /**
+     * @return array|string
+     */
     function getAllGames(){
         try{
             if($stmt = $this->dbh->prepare("SELECT * from server_schedule")){
@@ -52,6 +58,44 @@ class Schedule{
         }
     }
 
+    /**
+     * @param $team
+     * @return array|string
+     */
+    function getAllGamesbyTeam($team){
+        try{
+            if($stmt = $this->dbh->prepare("SELECT * from server_schedule WHERE awayteam = :team OR hometeam=:team")){
+                $stmt->bindParam(':team',$team, PDO::FETCH_CLASS);
+                $stmt->setFetchMode(PDO::FETCH_CLASS, "Schedule");
+                $stmt->execute();
+                $result = Array();
+                while($row = $stmt->fetch()){
+                    $result[] = $row;
+                }
+                $this-> dbh = null;
+                return $result;
+            }else{
+                $this->dbh = null;
+                return "failed";
+            }
+
+        }catch(PDOException $e){
+            die($e);
+        }
+    }
+
+    /**
+     * @param $sport
+     * @param $league
+     * @param $season
+     * @param $hometeam
+     * @param $awayteam
+     * @param $homescore
+     * @param $awayscore
+     * @param $scheduled
+     * @param $completed
+     * @return string
+     */
     function addSchedule($sport,$league,$season,$hometeam,$awayteam,$homescore,$awayscore,$scheduled,$completed){
         try {
             if ($stmt = $this->dbh->prepare("INSERT INTO server_schedule (sport, league, season, hometeam, awayteam, homescore, awayscore, scheduled, completed)
@@ -76,6 +120,28 @@ class Schedule{
             die($e);
         }
     }
+
+    /**
+     * @param $sport
+     * @param $league
+     * @param $season
+     * @param $hometeam
+     * @param $awayteam
+     * @param $homescore
+     * @param $awayscore
+     * @param $scheduled
+     * @param $completed
+     * @param $oldsport
+     * @param $oldleague
+     * @param $oldseason
+     * @param $oldhometeam
+     * @param $oldawayteam
+     * @param $oldhomescore
+     * @param $oldawayscore
+     * @param $oldscheduled
+     * @param $oldcompleted
+     * @return string
+     */
     function editSchedule($sport,$league,$season,$hometeam,$awayteam,$homescore,$awayscore,$scheduled,$completed,$oldsport,$oldleague,$oldseason,$oldhometeam,$oldawayteam,$oldhomescore,$oldawayscore,$oldscheduled,$oldcompleted){
         try {
             if ($stmt = $this->dbh->prepare("UPDATE server_schedule
@@ -111,6 +177,18 @@ class Schedule{
         }
     }
 
+    /**
+     * @param $sport
+     * @param $league
+     * @param $season
+     * @param $hometeam
+     * @param $awayteam
+     * @param $homescore
+     * @param $awayscore
+     * @param $scheduled
+     * @param $completed
+     * @return string
+     */
     function deleteSchedule($sport,$league,$season,$hometeam,$awayteam,$homescore,$awayscore,$scheduled,$completed){
         try {
             if ($stmt = $this->dbh->prepare("DELETE FROM server_schedule 
@@ -135,6 +213,10 @@ class Schedule{
         }
     }
 
+    /**
+     * @param $result
+     * @return string
+     */
     function getAllGamesAsTable($result){
         $bigString="<div class=\"row\">
                 <div class=\"col m12\">
@@ -159,21 +241,68 @@ class Schedule{
         foreach($result as $row){
             $bigString .="
                             <tr>
-                                <td class='teamID'>{$row->sport}</td>
-                                <td class='teamName'>{$row->league}</td>
-                                <td class='teamMascott'>{$row->season}</td>
-                                <td class='teamSport'>{$row->hometeam}</td>
-                                <td class='teamLeague'>{$row->awayteam}</td>
-                                <td class='teamSeason'>{$row->homescore}</td>
-                                <td class='teamPicture'>{$row->awayscore}</td>
-                                <td class='homecolor'>{$row->scheduled}</td>
-                                <td class='awaycolor'>{$row->completed}</td>
+                                <td >{$row->sport}</td>
+                                <td >{$row->league}</td>
+                                <td >{$row->season}</td>
+                                <td >{$row->hometeam}</td>
+                                <td >{$row->awayteam}</td>
+                                <td >{$row->homescore}</td>
+                                <td >{$row->awayscore}</td>
+                                <td >{$row->scheduled}</td>
+                                <td >{$row->completed}</td>
                                 <td><a class=\"waves-effect waves-light btn editScheduleButton modal-trigger\" href=\"#editSchedule\">Edit</a></td>
                                 <td><a class=\"waves-effect waves-light btn deleteScheduleButton\"><i class=\"material-icons right\">clear</i></a></td>
                             </tr>
                             ";
         }
         $bigString .="</tbody><a id='scheduleAdd' href='#editSchedule' class=\"btn-floating halfway-fab waves-effect waves-light red modal-trigger\"><i class=\"material-icons\">add</i></a>   
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>";
+        return $bigString;
+    }
+
+    /**
+     * @param $result
+     * @return string
+     */
+    function viewGames($result){
+        $bigString="<div class=\"row\">
+                <div class=\"col m12\">
+                  <div class=\"card blue-grey darken-1\">
+                    <div class=\"card-content white-text\">
+                      <span class=\"card-title\">Schedule</span>
+                      <table>
+                        <tr>
+                            <th>Sport</th>
+                            <th>League</th>
+                            <th>Season</th>                        
+                            <th>Home Team</th>
+                            <th>Away Team</th>
+                            <th>Home Score</th>
+                            <th>Away Score</th>
+                            <th>Scheduled</th>
+                            <th>Completed</th>
+                        </tr>
+                        <tbody>";
+        foreach($result as $row){
+            $bigString .="
+                            <tr>
+                                <td >{$row->sport}</td>
+                                <td >{$row->league}</td>
+                                <td >{$row->season}</td>
+                                <td >{$row->hometeam}</td>
+                                <td >{$row->awayteam}</td>
+                                <td >{$row->homescore}</td>
+                                <td >{$row->awayscore}</td>
+                                <td >{$row->scheduled}</td>
+                                <td >{$row->completed}</td>
+                            </tr>
+                            ";
+        }
+        $bigString .="</tbody>
                       </table>
                     </div>
                   </div>

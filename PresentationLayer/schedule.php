@@ -8,32 +8,32 @@ session_start();
 if(isset($_SESSION['role'])){
     if($_SESSION['role'] == 1){
         pageheader();
-        title("Team");
+        title("Schedule");
         teamTable();
         footer();
     }elseif($_SESSION['role'] == 2){
         pageheader();
-        title("Team");
+        title("Schedule");
         teamTable();
         footer();
 
     }elseif($_SESSION['role'] == 3){
         pageheader();
-        title("Team");
+        title("Schedule");
         teamTable();
         footer();
 
     }
     elseif($_SESSION['role'] == 4){
         pageheader();
-        title("Team");
+        title("Schedule");
         teamTable();
         footer();
 
     }
     elseif($_SESSION['role'] == 5){
         pageheader();
-        title("Team");
+        title("Schedule");
         teamTable();
         footer();
     }else{
@@ -65,7 +65,8 @@ function pageheader(){
     </header>
     <body>
     <!-- Created header -->
-    <nav class=\"navbar-fixed\">
+    
+        <nav class=\"navbar-fixed\">
         <div class=\"nav-wrapper\">
             <div class=\"banner nav-wrapper right\">
                 <button id=\"logout\" class=\"btn\">LOGOUT</button>
@@ -73,19 +74,21 @@ function pageheader(){
           <ul class=\"left\">";
             if($_SESSION['role'] == 5){
                 echo "
-            <li class='active'><a href=\"teamPage.php\" >Team Page</a></li>
-            <li><a href=\"schedule.php\">Schedule Page</a></li>
+            <li><a href=\"teamPage.php\" >Team Page</a></li>
+            <li class='active'><a href=\"schedule.php\">Schedule Page</a></li>
           </ul>
         </div>
     </nav>";
-            }else {
+            }else{
                 echo "<li><a href=\"admin.php\">Admin Page</a></li>
-            <li class='active'><a href=\"teamPage.php\">Team Page</a></li>
-            <li ><a href=\"schedule.php\">Schedule Page</a></li>
+            <li><a href=\"teamPage.php\">Team Page</a></li>
+            <li class='active'><a href=\"schedule.php\">Schedule Page</a></li>
           </ul>
         </div>
     </nav>";
             }
+
+
     echo "<!-- Created container to hold everything for styling-->
     <div>";
 }
@@ -101,6 +104,8 @@ function footer(){
         <script type=\"text/javascript\" src=\"../assets/js/team.js\"></script>
 
         <script type=\"text/javascript\" src=\"../assets/js/logout.js\"></script>
+        <script type=\"text/javascript\" src=\"../assets/js/schedule.js\"></script>
+
         <script type=\"text/javascript\" src=\"../assets/js/leagueManager.js\"></script>
         <script type=\"text/javascript\" src=\"../assets/js/teamManager.js\"></script>
 
@@ -120,5 +125,5 @@ function title($title){
 }
 
 function teamTable(){
-    echo "<div id='AteamTable'></div>";
+    echo "<div id='AscheduleTable'></div>";
 }

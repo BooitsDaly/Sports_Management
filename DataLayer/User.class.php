@@ -5,9 +5,6 @@
  * Time: 9:59 AM
  */
 
-//import needed files here
-require 'Database.class.php';
-
 /**
  * class that will replicate the people class in the DB
  */
@@ -15,7 +12,6 @@ class User
 {
     private $username;
     private $role;
-    private $password;
     private $team;
     private $league;
     private $dbh;
@@ -160,7 +156,6 @@ class User
     function getUserData($data){
         if (count($data) > 0) {
         foreach($data as $row)
-            var_dump($row);
             $string = "<p>{$row->username}</p>" .
                 "<p>{$row->role}</p>" .
                 "<p>{$row->team}</p>" .

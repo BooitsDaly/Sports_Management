@@ -1,11 +1,13 @@
 <?php
-
+/**
+ * add /view for positions BL layer
+ */
 if(isset($_POST['call'])){
     include ("helper.php");
     include("./../DataLayer/Position.class.php");
     $call = $_POST['call'];
     if($call == 'add'){
-        if(isset($_POST['position'])){
+        if(isset($_POST['position']) && $_POST['position'] != 'null' && $_POST['position'] != ''){
             $position = sanitizeString($_POST['position']);
             $db = new Position();
             $results = $db->addPosition($position);

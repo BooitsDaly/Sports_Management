@@ -1,12 +1,17 @@
 <?php
 include('helper.php');
 //check if subimmted
+/**
+ * get data
+ * sanatize and check if the credential are correct
+ * if so then redirect
+ */
 if($_POST['username'] != null){
     if($_POST['password'] != null){
         //sanitize
         //encrypt
         $username = sanitizeString($_POST['username']);
-        $pass = sha1(sanitizeString($_POST['password']));
+        $pass = hash('sha256',sanitizeString($_POST['password']));
         //validate
         include('../DataLayer/User.class.php');
         $user = new User();

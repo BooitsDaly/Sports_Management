@@ -5,6 +5,9 @@
         private $name;
         private $dbh;
 
+        /**
+         * Sport constructor.
+         */
         function __construct(){
             try {
                 // open a connection
@@ -16,6 +19,12 @@
                 die("Big Problem");
             }
         }
+
+        /**
+         * @param $id
+         * @param $name
+         * @return string
+         */
         function addSport($id,$name){
             try {
                 if ($stmt = $this->dbh->prepare("INSERT INTO server_sport (id, name)
@@ -32,6 +41,10 @@
             }
         }
 
+        /**
+         * @param $id
+         * @return string
+         */
         function deleteSport($id){
             try{
                 if($stmt = $this->dbh->prepare("DELETE from server_sport WHERE id=:id")){
@@ -47,6 +60,10 @@
                 die($e);
             }
         }
+
+        /**
+         * @return array|string
+         */
         function getSportNames(){
             try{
                 if($stmt = $this->dbh->prepare("SELECT name FROM server_sport")){
@@ -68,6 +85,9 @@
             }
         }
 
+        /**
+         * @return array|string
+         */
         function getIDs(){
             try{
                 if($stmt = $this->dbh->prepare("SELECT id FROM server_sport")){
@@ -89,6 +109,12 @@
             }
         }
 
+        /**
+         * @param $newID
+         * @param $sportName
+         * @param $oldID
+         * @return string
+         */
         function editSport($newID,$sportName,$oldID){
             try{
                 if($stmt = $this->dbh->prepare("UPDATE server_sport
@@ -109,6 +135,9 @@
             }
         }
 
+        /**
+         * @return string
+         */
         function getAllSportsAsTable(){
             $result = $this->getAllSports();
             $bigString="<div class=\"row\">
@@ -143,6 +172,9 @@
             return $bigString;
         }
 
+        /**
+         * @return array|string
+         */
         function getAllSports(){
             try{
                 if($stmt = $this->dbh->prepare("SELECT * FROM server_sport")){
@@ -162,5 +194,26 @@
             }catch(PDOException $e){
                 die($e);
             }
+        }
+        /**
+         * @param $data
+         * @param $id
+         * @return string
+         */
+        function getModals($data, $id){
+            $bigString = "<div class=\"input-field col s12\">
+    <select id='{$id}'>
+        <option value=\"\" disabled selected>Select Team</option>";
+            foreach($data as $row) {
+                $bigString .= "
+        <option value='{$row->id}'>{$row->name}</option>
+        ";
+            }
+
+            $bigString .= "
+        </select>
+        <label>Team</label>
+    </div>";
+            return $bigString;
         }
     }

@@ -3,10 +3,10 @@ include('./helper.php');
 include('./../DataLayer/Seasons.class.php');
 //check if data was sent
 //check if id = an existing id
-if(isset($_POST['oldID'])){
-    if(isset($_POST['newID'])){
-        if(isset($_POST['year'])){
-            if(isset($_POST['description'])) {
+if(isset($_POST['oldID'])&& $_POST['oldID'] != 'null' && $_POST['oldID'] != 'undefined'){
+    if(isset($_POST['newID'])&& $_POST['newID'] != 'null' && $_POST['newID'] != 'undefined'){
+        if(isset($_POST['year'])&& $_POST['year'] != 'null' && $_POST['year'] != 'undefined'){
+            if(isset($_POST['description'])&& $_POST['description'] != 'null' && $_POST['description'] != 'undefined') {
                 $oldId = sanitizeString($_POST['oldID']);
                 $newId = sanitizeString($_POST['newID']);
                 $year = sanitizeString($_POST['year']);

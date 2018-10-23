@@ -17,7 +17,9 @@ function sanitizeString($var){
     return $var;
 }
 
-
+/**
+ * error message return
+ */
 function errorMessage(){
     echo "<script> alert('Please Fill out the whole form');</script>";
 }

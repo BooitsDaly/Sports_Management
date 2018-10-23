@@ -2,9 +2,9 @@
     include('./helper.php');
     include('./../DataLayer/Seasons.class.php');
 
-    if(isset($_POST['id'])){
-        if(isset($_POST['year'])){
-            if(isset($_POST['description'])) {
+    if(isset($_POST['id']) && $_POST['id'] != ''){
+        if(isset($_POST['year'])  && $_POST['year'] != ''){
+            if(isset($_POST['description'])  && $_POST['description'] != '') {
                 $id = sanitizeString($_POST['id']);
                 $year = sanitizeString($_POST['year']);
                 $description = sanitizeString($_POST['description']);

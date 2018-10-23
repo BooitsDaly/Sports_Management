@@ -6,8 +6,7 @@
 <!DOCTYPE html>
 <html class="no-js" lang="en">
     <header>
-        <!--JQuery-->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 
         <!--Import Google Icon Font-->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -17,7 +16,7 @@
         <!--Let browser know website is optimized for mobile-->
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-        <link rel="stylesheet" type="text/css" href="assets/css/loginPage.css"/>
+        <link rel="stylesheet" type="text/css" href="assets/css/styles.css"/>
 
     </header>
     <body>
@@ -31,22 +30,22 @@
                 <!-- image -->
                 <div class="row">
                     <div class="center-align col s12">
-                        <i class="large material-icons">school</i>
+                        <i class="large material-icons">directions_run</i>
                         <div>
                         </div>
                         <!--form information -->
-                        <div class="row">
+
                             <form class="col s12" id="loginForm">
                                 <div class="row">
-                                    <div class="input-field col s12">
-                                        <input id="email" type="text" class="validate" name="username">
-                                        <label for="email">Username</label>
+                                    Username:<div class="input-field col s12">
+                                        <input id="username" type="text" class="validate" name="username">
+                                        <label for="username"></label>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="input-field col s12">
+                                    Password:<div class="input-field col s12">
                                         <input id="password" type="password" class="validate" name="password">
-                                        <label for="password">Password</label>
+                                        <label for="password"></label>
                                     </div>
                                 </div>
                                 <!-- Button -->
@@ -56,14 +55,15 @@
                                     </button>
                                 </div>
                             </form>
-                        </div>
+
                     </div>
                 </div>
             </div>
         </div>
 
     <!-- JS includes -->
-    <script src="./assets/js/helpers.js"></script>
+        <!--JQuery-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="assets/js/login.js"></script>
 
     </body>

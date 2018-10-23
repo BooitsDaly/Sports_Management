@@ -1,4 +1,5 @@
 $('#logout').click(function(){
+    //ajax to call logout script
     $.ajax({
         type: 'POST',
         async: true,

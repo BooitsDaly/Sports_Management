@@ -1,10 +1,17 @@
 $(document).ready(function(){
     /**
-     * All of the functionality for the User portion
+     * AJAX calls to load tables and modals:
+     *
+     * User
+     * Sports
+     * Players
      *
      */
 
+    //initiate forms
     $('select').formSelect();
+
+    //User Table
     $.ajax({
         type: 'POST',
         async: true,
@@ -15,6 +22,8 @@ $(document).ready(function(){
             $("#userTable").append(response);
         }
     });
+
+    //User -- Modal
     $.ajax({
         type: 'GET',
         async: true,
@@ -24,6 +33,8 @@ $(document).ready(function(){
             $("#userModalContent").append(response);
         }
     });
+
+    //User -- Modal
     $.ajax({
         type: 'GET',
         async: true,
@@ -31,22 +42,46 @@ $(document).ready(function(){
         url: './../BuisnessLayer/BLLeagueNames.php',
         success: function(response){
             $("#userModalContent").append(response);
+            var footerString = "<div class=\"modal-footer\">\n" +
+                "                <a id='editSaveChanges' href=\"#!\" class=\"modal-close waves-effect waves-green btn-flat\">Save Changes</a>\n" +
+                "            </div>";
+            //wait for the ajax responses to come in
+            setTimeout(function(){
+                $("#userModalContent").append(footerString);
+                $('.modal').modal();
+                $('select').formSelect();
+            },1000);
         }
     });
-    var footerString = "<div class=\"modal-footer\">\n" +
-        "                <a id='editSaveChanges' href=\"#!\" class=\"modal-close waves-effect waves-green btn-flat\">Save Changes</a>\n" +
-        "            </div>";
-    //wait for the ajax responses to come in
-    setTimeout(function(){
-        $("#userModalContent").append(footerString);
-        $('.modal').modal();
-        $('select').formSelect();
-    },1000);
+
+    //Sports Table
+    $.ajax({
+        type: 'GET',
+        async: true,
+        cache: false,
+        url: './../BuisnessLayer/BLAllSports.php',
+        success: function(response){
+            $("#sportsTable").append(response);
+        }
+    });
 
 
     /**
-     * Click event handler for the edit button
+     * Click event handlers:
+     *
+     * User
+     * Sports
      */
+
+    /**
+     * User click event handlers
+     *
+     * add
+     * delete
+     * edit
+     */
+
+    //edit -- user
     $(document).on('click','.editButton',function(){
         var value = $(this).closest('tr').find('td');
         var values = [];
@@ -64,6 +99,7 @@ $(document).ready(function(){
             var oldUser = values[0];
             //create a post string
             var formData = "call=edit&newUser="+username+"&password="+password+"&role="+role+"&league="+ league +"&team="+team+"&oldUser="+ oldUser;
+            console.log(formData);
             $.ajax({
                 url: './../BuisnessLayer/BLuser.php',
                 type: 'POST',
@@ -73,6 +109,8 @@ $(document).ready(function(){
                 success:function(response){
                     if(response == "Success!"){
                         window.location.reload();
+                    }else{
+                        $('body').append(response);
                     }
 
                 }
@@ -81,6 +119,7 @@ $(document).ready(function(){
         });
     });
 
+    //User -- Add
     $(document).on('click', '#userAdd', function(){
         $("#userModalHeader").html('');
         $(document).on('click', '#editSaveChanges', function(){
@@ -102,6 +141,8 @@ $(document).ready(function(){
                     if(response == "Success!"){
 
                         window.location.reload();
+                    }else{
+                        $('body').append(response);
                     }
 
                 }
@@ -110,13 +151,13 @@ $(document).ready(function(){
 
     });
 
+    //User -- Delete
     $(document).on('click', '.deleteButton', function(){
         var value = $(this).closest('tr').find('td');
         var values = [];
         $.each(value, function(i,item){
             values[i] = item.innerHTML;
         });
-        console.log(values);
         //create a post string
         var formData = "call=delete&username="+values[0];
         $.ajax({
@@ -126,9 +167,10 @@ $(document).ready(function(){
             cache: false,
             data: formData,
             success:function(response){
-                console.log(response);
                 if(response == "Success!"){
                     window.location.reload();
+                }else{
+                    $('body').append(response);
                 }
 
             }
@@ -136,22 +178,14 @@ $(document).ready(function(){
     });
 
     /**
-     * All of the functionality for the sports portion
+     * Sports click event handlers
      *
+     * add
+     * delete
+     * edit
      */
-    $.ajax({
-        type: 'GET',
-        async: true,
-        cache: false,
-        url: './../BuisnessLayer/BLAllSports.php',
-        success: function(response){
-            $("#sportsTable").append(response);
-        }
-    });
 
-    /**
-    *click event handler for edit
-    */
+    //Sports -- edit
     $(document).on('click', '.editSportsButton', function(){
         var value = $(this).closest('tr').find('td');
         var values = [];
@@ -161,62 +195,66 @@ $(document).ready(function(){
         $(document).on('click','#sportsSave',function(){
             var ID = $("#editSportID").val();
             var sportName = $("#editSportName").val();
-            var formData= "oldID="+values[0]+"&newID="+ ID+ "&sportName=" + sportName;
+            var formData= "call=edit&oldID="+values[0]+"&newID="+ ID+ "&sportName=" + sportName;
             $.ajax({
                 type: 'POST',
                 async: true,
                 cache: false,
                 data: formData,
-                url: './../BuisnessLayer/BLeditSports.php',
+                url: './../BuisnessLayer/BLsports.php',
                 success: function(response){
                     if(response == "Success!"){
                         window.location.reload();
+                    }else{
+                        $('body').append(response);
                     }
                 }
             });
         });
     });
 
-    /**
-     *click event handler for delete
-     */
+    //Sports -- Delete
     $(document).on('click', '.deleteSportsButton', function(){
         var value = $(this).closest('tr').find('td');
         var values = [];
         $.each(value, function(i,item){
             values[i] = item.innerHTML;
         });
-        var formData= "ID="+ values[0];
+        var formData= "call=delete&ID="+ values[0];
         $.ajax({
             type: 'POST',
             async: true,
             cache: false,
             data: formData,
-            url: './../BuisnessLayer/BLdeleteSports.php',
+            url: './../BuisnessLayer/BLsports.php',
             success: function(response){
                 if(response == "Success!"){
                     window.location.reload();
+                }else{
+                    $('body').append(response);
                 }
             }
         });
 
     });
 
+    //Sports Add
     $(document).on('click', '#editSports', function(){
         $(document).on('click','#sportsSave',function(){
             var ID = $("#editSportID").val();
             var sportName = $("#editSportName").val();
-            var formData= "ID="+ ID+ "&sportName=" + sportName;
+            var formData= "call=add&ID="+ ID+ "&sportName=" + sportName;
             $.ajax({
                 type: 'POST',
                 async: true,
                 cache: false,
                 data: formData,
-                url: './../BuisnessLayer/BLaddSports.php',
+                url: './../BuisnessLayer/BLsports.php',
                 success: function(response){
-                    $('body').append(response);
                     if(response == "Success!"){
                         window.location.reload();
+                    }else{
+                        $('body').append(response);
                     }
                 }
             });

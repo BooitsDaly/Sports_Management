@@ -137,6 +137,8 @@ $(document).ready(function(){
                     $("body").append(response);
                     if(response == "Success!"){
                         window.location.reload();
+                    }else{
+                        $('body').append(response);
                     }
 
                 }
@@ -161,9 +163,10 @@ $(document).ready(function(){
             cache: false,
             data: formData,
             success:function(response){
-                console.log(response);
                 if(response == "Success!"){
                     window.location.reload();
+                }else{
+                    $('body').append(response);
                 }
 
             }
@@ -191,6 +194,8 @@ $(document).ready(function(){
                 success: function(response){
                     if(response == "Success!"){
                         window.location.reload();
+                    }else{
+                        $('body').append(response);
                     }
                 }
             });
@@ -233,6 +238,8 @@ $(document).ready(function(){
                     $('body').append(response);
                     if(response == "Success!"){
                         window.location.reload();
+                    }else{
+                        $('body').append(response);
                     }
 
                 }
@@ -258,6 +265,8 @@ $(document).ready(function(){
                 success:function(response){
                     if(response == "Success!"){
                         window.location.reload();
+                    }else{
+                        $('body').append(response);
                     }
 
                 }
@@ -288,6 +297,8 @@ $(document).ready(function(){
             success:function(response){
                 if(response == "Success!"){
                     window.location.reload();
+                }else{
+                    $('body').append(response);
                 }
             }
         });
@@ -314,6 +325,9 @@ $(document).ready(function(){
             var $name = $("#teamName").val();
             var $mascot = $("#teamMascot").val();
             var $sls = $('select#teamsls').val();
+            if($sls === null){
+                alert("Fill in all fields");
+            }
             var splitString = $sls.split(",");
             var $sport = splitString[0];
             var $league = splitString[1];
@@ -349,6 +363,8 @@ $(document).ready(function(){
                     $('body').append(response);
                     if (response == "Success!") {
                         window.location.reload();
+                    }else{
+                        $('body').append(response);
                     }
                 }
             });
@@ -362,6 +378,9 @@ $(document).ready(function(){
             var $name = $("#teamName").val();
             var $mascot = $("#teamMascot").val();
             var $sls = $('select#teamsls').val();
+            if($sls === null){
+                alert("Fill in all fields");
+            }
             var splitString = $sls.split(",");
             var $sport = splitString[0];
             var $league = splitString[1];
@@ -395,6 +414,8 @@ $(document).ready(function(){
                 success: function (response) {
                     if (response == "Success!") {
                         window.location.reload();
+                    }else{
+                        $('body').append(response);
                     }
                 }
             });
@@ -429,9 +450,10 @@ $(document).ready(function(){
             cache: false,
             data: formData,
             success:function(response){
-                console.log(response);
                 if(response == "Success!"){
                     window.location.reload();
+                }else{
+                    $('body').append(response);
                 }
             }
         });
@@ -457,6 +479,9 @@ $(document).ready(function(){
         $(document).on('click', '#scheduleSave', function () {
             var $sls = $('select#scheduleSLS').val();
             var splitString = $sls.split(",");
+            if($sls === null){
+                alert("Fill in all fields");
+            }
             var $sport = splitString[0];
             var $league = splitString[1];
             var $season =splitString[2];
@@ -501,6 +526,9 @@ $(document).ready(function(){
     $(document).on('click','#scheduleAdd', function() {
         $(document).on('click', '#scheduleSave', function () {
             var $sls = $('select#scheduleSLS').val();
+            if($sls === null){
+                alert("Fill in all fields");
+            }
             var splitString = $sls.split(",");
             var $sport = splitString[0];
             var $league = splitString[1];

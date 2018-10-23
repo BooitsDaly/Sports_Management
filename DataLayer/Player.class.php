@@ -9,6 +9,9 @@
         private $team;
         private $dbh;
 
+        /**
+         * Player constructor.
+         */
         function __construct(){
             try {
                 // open a connection
@@ -21,6 +24,39 @@
             }
         }
 
+        /**
+         * @param $firstname
+         * @param $lastname
+         * @param $dob
+         * @param $jerseynumber
+         * @param $team
+         * @return string
+         */
+        function addPlayers($firstname, $lastname, $dob, $jerseynumber, $team){
+            try {
+                if ($stmt = $this->dbh->prepare("INSERT INTO server_player (id, firstname, lastname, dateofbirth, jerseynumber, team) 
+VALUES ('', :firstname, :lastname, :dateofbirth, :jerseynumber, :team)")){
+                    $stmt->bindParam(":firstname", $firstname);
+                    $stmt->bindParam(":lastname", $lastname);
+                    $stmt->bindParam(":dateofbirth", $dob);
+                    $stmt->bindParam(":jerseynumber", $jerseynumber);
+                    $stmt->bindParam(":team", $team);
+                    $stmt->execute();
+                    $this->dbh = null;
+                    return "Success!";
+                }else{
+                    $this->dbh = null;
+                    return "fail";
+                }
+            } catch (PDOException $e) {
+                die($e);
+            }
+        }
+
+        /**
+         * @param $team
+         * @return array|string
+         */
         function getPlayersbyTeam($team){
             try{
                 if($stmt = $this->dbh->prepare("SELECT * from server_player WHERE team=:team")){
@@ -43,6 +79,33 @@
             }
         }
 
+        /**
+         * @param $team
+         * @param $jerseynumber
+         * @return string
+         */
+        function deletePlayer($team, $jerseynumber){
+            try{
+                if($stmt = $this->dbh->prepare("DELETE FROM server_player WHERE team=:team AND jerseynumber = :jerseynumber")){
+                    $stmt->bindParam(':team', $team);
+                    $stmt->bindParam(':jerseynumber', $jerseynumber);
+                    $stmt->execute();
+
+                    $this->dbh = null;
+                    return "Success!";
+                }else {
+                    $this->dbh = null;
+                    return "failed";
+                }
+
+            }catch(PDOException $e){
+                die($e);
+            }
+        }
+
+        /**
+         * @return array|string
+         */
         function getAllPlayers(){
             try{
                 if($stmt = $this->dbh->prepare("SELECT * from server_player")){
@@ -64,6 +127,45 @@
             }
         }
 
+        /**
+         * @param $team
+         * @param $firstname
+         * @param $lastname
+         * @param $dateofbirth
+         * @param $jerseynumber
+         * @param $oldteam
+         * @param $oldjerseynumber
+         * @return string
+         */
+        function editPlayer($team,$firstname, $lastname, $dateofbirth, $jerseynumber, $oldteam, $oldjerseynumber ){
+            try{
+                if($stmt = $this->dbh->prepare("UPDATE server_player
+                                                SET firstname = :firstname, lastname = :lastname, dateofbirth = :dateofbirth, jerseynumber = :jerseynumber, team=:team 
+                                                WHERE team=:oldteam AND jerseynumber = :oldjerseynumber")){
+                    $stmt->bindParam(":firstname", $firstname);
+                    $stmt->bindParam(":lastname", $lastname);
+                    $stmt->bindParam(":dateofbirth", $dateofbirth);
+                    $stmt->bindParam(":jerseynumber", $jerseynumber);
+                    $stmt->bindParam(":team", $team);
+
+                    $stmt->bindParam(':oldteam', $oldteam);
+                    $stmt->bindParam(':oldjerseynumber', $oldjerseynumber);
+                    $stmt->execute();
+                    $this->dbh = null;
+                    return "Success!";
+                }else{
+                    $this->dbh = null;
+                    return "Failed";
+                }
+            }catch(PDOException $e){
+                die($e);
+            }
+        }
+
+        /**
+         * @param $result
+         * @return string
+         */
         function getAsTable($result){
             $bigString="<div class=\"row\">
                 <div class=\"col m12\">
@@ -105,6 +207,11 @@
             return $bigString;
         }
 
+        /**
+         * @param $data
+         * @param $id
+         * @return string
+         */
         function getModals($data, $id){
             $bigString = "<div class=\"input-field col s12\">
     <select id='{$id}'>

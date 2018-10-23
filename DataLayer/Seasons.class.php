@@ -7,6 +7,9 @@
         private $dbh;
 
 
+        /**
+         * Seasons constructor.
+         */
 
         function __construct(){
             try {
@@ -20,6 +23,12 @@
             }
         }
 
+        /**
+         * @param $id
+         * @param $year
+         * @param $description
+         * @return string
+         */
         function addSeason($id, $year, $description){
             try {
                 if ($stmt = $this->dbh->prepare("INSERT INTO server_season (id, year, description)
@@ -38,6 +47,10 @@
             }
         }
 
+        /**
+         * @param $id
+         * @return string
+         */
         function deleteSeason($id)
         {
             try {
@@ -55,6 +68,13 @@
             }
         }
 
+        /**
+         * @param $newID
+         * @param $year
+         * @param $oldID
+         * @param $description
+         * @return string
+         */
         function editSeason($newID,$year,$oldID, $description){
             try{
                 if($stmt = $this->dbh->prepare("UPDATE server_season
@@ -76,6 +96,9 @@
             }
         }
 
+        /**
+         * @return array|string
+         */
         function getAllSeason(){
             try{
                 if($stmt = $this->dbh->prepare("SELECT * FROM server_season")){
@@ -97,6 +120,9 @@
             }
         }
 
+        /**
+         * @return array|string
+         */
         function getIDs(){
             try{
                 if($stmt = $this->dbh->prepare("SELECT id FROM server_season")){
@@ -118,6 +144,10 @@
             }
         }
 
+        /**
+         * @param $result
+         * @return string
+         */
         function getAllSeasonsAsTable($result){
             $bigString="<div class=\"row\">
                 <div class=\"col m12\">
@@ -150,6 +180,28 @@
                   </div>
                 </div>
               </div>";
+            return $bigString;
+        }
+
+        /**
+         * @param $data
+         * @param $id
+         * @return string
+         */
+        function getModals($data, $id){
+            $bigString = "<div class=\"input-field col s12\">
+    <select id='{$id}'>
+        <option value=\"\" disabled selected>Select Team</option>";
+            foreach($data as $row) {
+                $bigString .= "
+        <option value='{$row->id}'>{$row->id}</option>
+        ";
+            }
+
+            $bigString .= "
+        </select>
+        <label>Team</label>
+    </div>";
             return $bigString;
         }
 

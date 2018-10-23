@@ -4,6 +4,10 @@
         private $name;
         private $id;
         private $dbh;
+
+        /**
+         * Position constructor.
+         */
         function __construct(){
             try {
                 // open a connection
@@ -15,6 +19,11 @@
                 die("Big Problem");
             }
         }
+
+        /**
+         * @param $name
+         * @return string
+         */
         function addPosition($name){
             try {
                 if ($stmt = $this->dbh->prepare("INSERT INTO server_position (id, name) VALUES ('', :name)")){
@@ -32,6 +41,9 @@
             }
         }
 
+        /**
+         * @return array
+         */
         function getAllPositions(){
             try{
                 if($stmt = $this->dbh->prepare("SELECT * FROM server_position")){
@@ -49,6 +61,10 @@
             }
         }
 
+        /**
+         * @param $result
+         * @return string
+         */
         function getAsTable($result){
             $bigString="<div class=\"row\">
                 <div class=\"col m12\">

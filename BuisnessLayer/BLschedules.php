@@ -1,18 +1,19 @@
 <?php
+session_start();
 include ("./../DataLayer/Schedule.class.php");
 include ("helper.php");
 if(isset($_POST['call'])){
     $call = $_POST['call'];
     if($call == 'add'){
-        if(isset($_POST['sport'])){
-            if(isset($_POST['league'])){
-                if(isset($_POST['season'])){
-                    if(isset($_POST['hometeam'])){
-                        if(isset($_POST['awayteam'])){
-                            if(isset($_POST['homescore'])){
-                                if(isset($_POST['awayscore'])){
-                                    if(isset($_POST['scheduled'])){
-                                        if(isset($_POST['completed'])){
+        if(isset($_POST['sport']) && $_POST['sport'] != 'null' &&  $_POST['sport'] != 'undefined'){
+            if(isset($_POST['league']) && $_POST['league'] != 'null' &&  $_POST['league'] != 'undefined'){
+                if(isset($_POST['season']) && $_POST['season'] != 'null' &&  $_POST['season'] != 'undefined'){
+                    if(isset($_POST['hometeam']) && $_POST['hometeam'] != 'null'  && $_POST['hometeam'] != 'undefined'){
+                        if(isset($_POST['awayteam']) && $_POST['awayteam'] != 'null'  && $_POST['awayteam'] != 'undefined'){
+                            if(isset($_POST['homescore']) && $_POST['homescore'] != 'null'  && $_POST['homescore'] != 'undefined'){
+                                if(isset($_POST['awayscore']) && $_POST['awayscore'] != 'null'  && $_POST['awayscore'] != 'undefined'){
+                                    if(isset($_POST['scheduled']) && $_POST['scheduled'] != 'null'  && $_POST['scheduled'] != 'undefined'){
+                                        if(isset($_POST['completed']) && $_POST['completed'] != 'null'  && $_POST['completed'] != 'undefined'){
                                             $sport = sanitizeString($_POST['sport']);
                                             $league = sanitizeString($_POST['league']);
                                             $season = sanitizeString($_POST['season']);
@@ -72,15 +73,15 @@ if(isset($_POST['call'])){
         echo $results;
 
     }elseif($call == 'delete'){
-        if(isset($_POST['sport'])){
-            if(isset($_POST['league'])){
-                if(isset($_POST['season'])){
-                    if(isset($_POST['hometeam'])){
-                        if(isset($_POST['awayteam'])){
-                            if(isset($_POST['homescore'])){
-                                if(isset($_POST['awayscore'])){
-                                    if(isset($_POST['scheduled'])){
-                                        if(isset($_POST['completed'])){
+        if(isset($_POST['sport'])&& $_POST['sport'] != 'null' && $_POST['sport'] != 'undefined'){
+            if(isset($_POST['league'])&& $_POST['league'] != 'null' && $_POST['league'] != 'undefined'){
+                if(isset($_POST['season'])&& $_POST['season'] != 'null' && $_POST['season'] != 'undefined'){
+                    if(isset($_POST['hometeam'])&& $_POST['hometeam'] != 'null' && $_POST['hometeam'] != 'undefined'){
+                        if(isset($_POST['awayteam'])&& $_POST['awayteam'] != 'null' && $_POST['awayteam'] != 'undefined'){
+                            if(isset($_POST['homescore'])&& $_POST['homescore'] != 'null' && $_POST['homescore'] != 'undefined'){
+                                if(isset($_POST['awayscore'])&& $_POST['awayscore'] != 'null' && $_POST['awayscore'] != 'undefined'){
+                                    if(isset($_POST['scheduled'])&& $_POST['scheduled'] != 'null' && $_POST['scheduled'] != 'undefined'){
+                                        if(isset($_POST['completed'])&& $_POST['completed'] != 'null' && $_POST['completed'] != 'undefined'){
                                             $sport = sanitizeString($_POST['sport']);
                                             $league = sanitizeString($_POST['league']);
                                             $season = sanitizeString($_POST['season']);
@@ -131,24 +132,23 @@ if(isset($_POST['call'])){
         }
 
     }elseif($call == 'edit'){
-        if(isset($_POST['sport'])){
-            if(isset($_POST['league'])){
-                if(isset($_POST['season'])){
-                    if(isset($_POST['hometeam'])){
-                        if(isset($_POST['awayteam'])){
-                            if(isset($_POST['homescore'])){
-                                if(isset($_POST['awayscore'])){
-                                    if(isset($_POST['scheduled'])){
-                                        if(isset($_POST['completed'])){
-                                            if(isset($_POST['oldsport'])){
-                                                if(isset($_POST['oldleague'])){
-                                                    if(isset($_POST['oldseason'])){
-                                                        if(isset($_POST['oldhometeam'])){
-                                                            if(isset($_POST['oldawayteam'])){
-                                                                if(isset($_POST['oldhomescore'])){
-                                                                    if(isset($_POST['oldawayscore'])){
-                                                                        if(isset($_POST['oldscheduled'])){
-                                                                            if(isset($_POST['oldcompleted'])){
+        if(isset($_POST['sport'])&& $_POST['sport'] != 'null' && $_POST['sport'] != 'undefined'){
+            if(isset($_POST['league'])&& $_POST['league'] != 'null' && $_POST['league'] != 'undefined'){
+                if(isset($_POST['season'])&& $_POST['season'] != 'null' && $_POST['season'] != 'undefined'){
+                    if(isset($_POST['hometeam'])&& $_POST['hometeam'] != 'null' && $_POST['hometeam'] != 'undefined'){
+                        if(isset($_POST['awayteam'])&& $_POST['awayteam'] != 'null' && $_POST['awayteam'] != 'undefined'){
+                            if(isset($_POST['homescore'])&& $_POST['homescore'] != 'null' && $_POST['homescore'] != 'undefined'){
+                                if(isset($_POST['awayscore'])&& $_POST['awayscore'] != 'null' && $_POST['awayscore'] != 'undefined'){
+                                    if(isset($_POST['scheduled'])&& $_POST['scheduled'] != 'null' && $_POST['scheduled'] != 'undefined'){
+                                        if(isset($_POST['completed'])&& $_POST['completed'] != 'null' && $_POST['completed'] != 'undefined'){
+                                            if(isset($_POST['oldsport'])&& $_POST['oldsport'] != 'null' && $_POST['oldsport'] != 'undefined'){
+                                                if(isset($_POST['oldleague'])&& $_POST['oldleague'] != 'null' && $_POST['oldleague'] != 'undefined'){
+                                                    if(isset($_POST['oldseason'])&& $_POST['oldseason'] != 'null' && $_POST['oldseason'] != 'undefined'){
+                                                        if(isset($_POST['oldhometeam'])&& $_POST['oldhometeam'] != 'null' && $_POST['oldhometeam'] != 'undefined'){
+                                                            if(isset($_POST['oldawayteam'])&& $_POST['oldawayteam'] != 'null' && $_POST['oldawayteam'] != 'undefined'){
+                                                                    if(isset($_POST['oldawayscore'])&& $_POST['oldawayscore'] != 'null' && $_POST['oldawayscore'] != 'undefined'){
+                                                                        if(isset($_POST['oldscheduled'])&& $_POST['oldscheduled'] != 'null' && $_POST['oldscheduled'] != 'undefined'){
+                                                                            if(isset($_POST['oldcompleted'])&& $_POST['oldcompleted'] != 'null' && $_POST['oldcompleted'] != 'undefined'){
                                                                                 $sport = sanitizeString($_POST['sport']);
                                                                                 $league = sanitizeString($_POST['league']);
                                                                                 $season = sanitizeString($_POST['season']);
@@ -188,10 +188,6 @@ if(isset($_POST['call'])){
                                                                     }else{
                                                                         errorMessage();
                                                                     }
-
-                                                                }else{
-                                                                    errorMessage();
-                                                                }
 
                                                             }else{
                                                                 errorMessage();
@@ -247,6 +243,7 @@ if(isset($_POST['call'])){
             errorMessage();
         }
 
+
     }elseif($call == 'modal'){
         include("./../DataLayer/SLSeason.class.php");
         include("./../DataLayer/Team.class.php");
@@ -263,9 +260,15 @@ if(isset($_POST['call'])){
 
         echo $results2;
         echo $results3;
-
-
-
+    }elseif($call == 'schedulePage'){
+        $db = new Schedule();
+        if($_SESSION['role'] == 1 || $_SESSION['role'] == 2){
+            $data = $db->getAllGames();
+        }else{
+            $data = $db->getAllGamesbyTeam($_SESSION['team']);
+        }
+        $results = $db->viewGames($data);
+        echo $results;
     }
 }
 

@@ -6,6 +6,9 @@ class SLSeason{
     private $league;
     private $dbh;
 
+    /**
+     * SLSeason constructor.
+     */
     function __construct(){
         try {
             // open a connection
@@ -18,10 +21,16 @@ class SLSeason{
         }
     }
 
+    /**
+     * @param $sport
+     * @param $league
+     * @param $seson
+     * @return string
+     */
     function addSLSeason($sport, $league, $seson){
         try {
-            if ($stmt = $this->dbh->prepare("INSERT INTO server_slseason (sport, league, season)
-                                            VALUES (:sport,:league,:season)")) {
+            if ($stmt = $this->dbh->prepare("SET FOREIGN_KEY_CHECKS=0; INSERT INTO server_slseason (sport, league, season)
+                                            VALUES (:sport,:league,:season); SET FOREIGN_KEY_CHECKS=1;")) {
                 $stmt->bindParam(":sport", $sport);
                 $stmt->bindParam(":league", $league);
                 $stmt->bindParam(":season", $seson);
@@ -36,11 +45,17 @@ class SLSeason{
         }
     }
 
+    /**
+     * @param $sport
+     * @param $season
+     * @param $league
+     * @return string
+     */
     function deleteSLSeason($sport, $season, $league)
     {
         try {
-            if ($stmt = $this->dbh->prepare("DELETE FROM server_slseason
-                                                WHERE sport=:sport AND season=:season AND league=:league")) {
+            if ($stmt = $this->dbh->prepare("SET FOREIGN_KEY_CHECKS=0; DELETE FROM server_slseason
+                                                WHERE sport=:sport AND season=:season AND league=:league;SET FOREIGN_KEY_CHECKS=1;")) {
                 $stmt->bindParam(":sport", $sport);
                 $stmt->bindParam(":season", $season);
                 $stmt->bindParam(":league", $league);
@@ -55,11 +70,20 @@ class SLSeason{
         }
     }
 
+    /**
+     * @param $newSport
+     * @param $oldSport
+     * @param $season
+     * @param $league
+     * @param $oldSeason
+     * @param $oldLeague
+     * @return string
+     */
     function editSLSeason($newSport,$oldSport,$season, $league, $oldSeason, $oldLeague){
         try{
-            if($stmt = $this->dbh->prepare("UPDATE server_slseason
+            if($stmt = $this->dbh->prepare("SET FOREIGN_KEY_CHECKS=0;UPDATE server_slseason
                                                 SET sport=:newSport, season=:season, league=:league
-                                                WHERE sport=:oldSport AND season=:oldSeason AND league=:oldLeague")){
+                                                WHERE sport=:oldSport AND season=:oldSeason AND league=:oldLeague;SET FOREIGN_KEY_CHECKS=1;")){
                 $stmt->bindParam(":newSport", $newSport);
                 $stmt->bindParam(":season", $season);
                 $stmt->bindParam(":oldSport", $oldSport);
@@ -78,6 +102,9 @@ class SLSeason{
         }
     }
 
+    /**
+     * @return array|string
+     */
     function getAllSLSeason(){
         try{
             if($stmt = $this->dbh->prepare("SELECT * FROM server_slseason")){
@@ -99,6 +126,9 @@ class SLSeason{
         }
     }
 
+    /**
+     * @return array|string
+     */
     function getIDs(){
         try{
             if($stmt = $this->dbh->prepare("SELECT sport FROM server_slseason")){
@@ -120,6 +150,11 @@ class SLSeason{
         }
     }
 
+    /**
+     * @param $data
+     * @param $id
+     * @return string
+     */
     function getModals($data, $id){
         $bigString = "<div class=\"input-field col s12\">
     <select id='{$id}'>
@@ -137,6 +172,10 @@ class SLSeason{
         return $bigString;
     }
 
+    /**
+     * @param $result
+     * @return string
+     */
     function getAllSLSeasonsAsTable($result){
         $bigString="<div class=\"row\">
                 <div class=\"col m12\">

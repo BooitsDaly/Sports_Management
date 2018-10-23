@@ -12,6 +12,9 @@
         private $maxplayers;
         private $dbh;
 
+        /**
+         * Team constructor.
+         */
         function __construct(){
             try {
                 // open a connection
@@ -24,6 +27,9 @@
             }
         }
 
+        /**
+         * @return array
+         */
         function getTeamNames(){
             try{
                 if($stmt = $this->dbh->prepare("SELECT name FROM server_team")){
@@ -41,6 +47,10 @@
             }
         }
 
+        /**
+         * @param $id
+         * @return array|string
+         */
         function getTeams($id){
             try{
                 if($stmt = $this->dbh->prepare("SELECT * from server_team WHERE league=:id")){
@@ -63,6 +73,9 @@
             }
         }
 
+        /**
+         * @return array|string
+         */
         function getAllTeams(){
             try{
                 if($stmt = $this->dbh->prepare("SELECT * from server_team")){
@@ -85,6 +98,18 @@
 
         }
 
+        /**
+         * @param $name
+         * @param $mascot
+         * @param $sport
+         * @param $league
+         * @param $season
+         * @param $picture
+         * @param $homecolor
+         * @param $awaycolor
+         * @param $maxplayers
+         * @return string
+         */
         function addTeam($name,$mascot,$sport,$league,$season,$picture,$homecolor,$awaycolor,$maxplayers){
             try {
                 if ($stmt = $this->dbh->prepare("INSERT INTO server_team (id, name, mascot, sport, league, season, picture,homecolor,awaycolor,maxplayers)VALUES ('', :name, :mascot, :sport, :league, :season, :picture, :homecolor, :awaycolor, :maxplayers)")){
@@ -109,6 +134,11 @@
                 die($e);
             }
         }
+
+        /**
+         * @param $id
+         * @return string
+         */
         function deleteTeam($id){
             try{
                 if($stmt = $this->dbh->prepare("DELETE from server_team WHERE id=:id")){
@@ -125,9 +155,13 @@
             }
         }
 
+        /**
+         * @param $team
+         * @return array|string
+         */
         function getATeam($team){
             try{
-                if($stmt = $this->dbh->prepare("SELECT * from server_team WHERE team=:team")){
+                if($stmt = $this->dbh->prepare("SELECT * from server_team WHERE id=:team")){
                     $stmt->bindParam(':team',$team, PDO::FETCH_CLASS);
                     $stmt->execute();
                     $stmt->setFetchMode(PDO::FETCH_CLASS, "team");
@@ -146,20 +180,42 @@
 
         }
 
+        /**
+         * @param $data
+         * @return string
+         */
         function getTeamAsList($data){
-            return "<ul class=\"collection with-header\">
-                        <li class=\"collection-header\"><h4>{$data->name}</h4></li>
-                        <li class=\"collection-item\">Mascot: {$data->mascot}</li>
-                        <li class=\"collection-item\">Sport: {$data->sport}</li>
-                        <li class=\"collection-item\">League: {$data->league}</li>
-                        <li class=\"collection-item\">Season: {$data->season}</li>
-                        <li class=\"collection-item\">Picture: {$data->picture}</li>
-                        <li class=\"collection-item\">Home Color: {$data->homecolor}</li>
-                        <li class=\"collection-item\">Away Color: {$data->awaycolor}</li>
-                        <li class=\"collection-item\">Max Players: {$data->maxplayers}</li>
-                    </ul>";
+            $bigString = "<ul class=\"collection with-header\">
+                        ";
+            foreach($data as $row) {
+                $bigString .= "<li class=\"collection-header\"><h4>{$row->name}</h4></li>
+                        <li class=\"collection-item\">Mascot: {$row->mascot}</li>
+                        <li class=\"collection-item\">Sport: {$row->sport}</li>
+                        <li class=\"collection-item\">League: {$row->league}</li>
+                        <li class=\"collection-item\">Season: {$row->season}</li>
+                        <li class=\"collection-item\">Picture: {$row->picture}</li>
+                        <li class=\"collection-item\">Home Color: {$row->homecolor}</li>
+                        <li class=\"collection-item\">Away Color: {$row->awaycolor}</li>
+                        <li class=\"collection-item\">Max Players: {$row->maxplayers}</li>
+                    ";
+            }
+            $bigString .= "</ul>";
+            return $bigString;
         }
 
+        /**
+         * @param $id
+         * @param $name
+         * @param $mascot
+         * @param $sport
+         * @param $league
+         * @param $season
+         * @param $picture
+         * @param $homecolor
+         * @param $awaycolor
+         * @param $maxplayers
+         * @return string
+         */
         function editTeam($id,$name,$mascot,$sport,$league,$season,$picture,$homecolor,$awaycolor,$maxplayers){
             try {
                 if ($stmt = $this->dbh->prepare("UPDATE server_team
@@ -187,6 +243,10 @@
             }
         }
 
+        /**
+         * @param $result
+         * @return string
+         */
         function getAllTeamsAsTable($result){
             $bigString="<div class=\"row\">
                 <div class=\"col m12\">
@@ -236,6 +296,11 @@
             return $bigString;
         }
 
+        /**
+         * @param $data
+         * @param $id
+         * @return string
+         */
         function getModals($data, $id){
             $bigString = "<div class=\"input-field col s12\">
     <select id='{$id}'>

@@ -141,5 +141,16 @@
 
         }elseif($call == 'modal'){
 
+        }elseif($call == 'viewPage'){
+            $db = new Team();
+            if($_SESSION['role'] == 1 || $_SESSION['role'] == 2){
+                $data = $db->getAllTeams();
+            }
+            else{
+                $data = $db->getATeam($_SESSION['team']);
+            }
+            $result = $db->getTeamAsList($data);
+            echo $result;
+
         }
     }

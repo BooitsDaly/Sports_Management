@@ -61,6 +61,7 @@ function pageheader(){
 
         <!--font awesome -->
         <link href=\"https://fonts.googleapis.com/icon?family=Material+Icons\" rel=\"stylesheet\">
+        <link rel=\"stylesheet\" type=\"text/css\" href=\"assets/css/styles.css\"/>
 
         <!--Let browser know website is optimized for mobile-->
         <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"/>
@@ -115,8 +116,9 @@ function title($title){
         ";
 }
 
-function userTable(){
-    echo"
+function userTable()
+{
+    echo "
     
         <!-- The sections below will be dynamically created once get information out of the database -->
         <div id=\"userTable\"></div>
@@ -136,14 +138,22 @@ function userTable(){
 
 
                 <div class=\"input-field col s12\">
-                    <select id=\"role\">
-                        <option class=\"role\" value=\"\" disabled selected>Choose a new Role</option>
+                    <select id=\"role\">";
+                    if($_SESSION['role'] == 1){
+                        echo "<option class=\"role\" value=\"\" disabled selected>Choose a new Role</option>
                         <option class=\"role\" value=\"1\">Admin</option>
-                        <option class=\"role\" value=\"2\">League Manager</option>
-                        <option class=\"role\" value=\"3\">Team Manager</option>
+                        <option class=\"role\" value=\"2\">League Manager</option>";
+                        }
+                        if($_SESSION['role'] == 3 ||$_SESSION['role'] == 4 || $_SESSION['role'] == 1){
+                            echo "<option class=\"role\" value=\"3\">Team Manager</option>
                         <option class=\"role\" value=\"4\">Coach</option>
-                        <option class=\"role\" value=\"5\">Parent</option>
-                    </select>
+                        <option class=\"role\" value=\"5\">Parent</option>";
+                        }else if($_SESSION['role'] == 2){
+                            echo "<option class=\"role\" value=\"3\">Team Manager</option>
+                        <option class=\"role\" value=\"4\">Coach</option>";
+                        }
+
+                    echo "</select>
                     <label>Role</label>
                 </div>
             </div>
@@ -295,6 +305,32 @@ function teamManager(){
         </div>
         
         <div id='playerTable'></div>
+        <!-- Modal Structure -->
+        <div id=\"editPlayers\" class=\"modal\">
+            <div id=\"playerModalContent\" class=\"modal-content\">
+                <div id='playerModal'></div>
+                <div class=\"input-field col s12\">
+                    <input id=\"firstname\" class=\"validate\" type=\"text\">
+                    <label for=\"firstname\">First Name</label>
+                </div>
+                <div class=\"input-field col s12\">
+                    <input id=\"lastname\" class=\"validate\" type=\"text\">
+                    <label for=\"lastname\">Last Name</label>
+                </div>
+                <div class=\"input-field col s12\">
+                    <input id=\"playerDOB\" class=\"validate\" type=\"date\">
+                    <label for=\"playerDOB\">Date of Birth</label>
+                </div>
+                <div class=\"input-field col s12\">
+                    <input id=\"jerseynumber\" class=\"validate\" type=\"number\">
+                    <label for=\"jerseynumber\">Jersey Number</label>
+                </div>
+                <div id='playerTeams'></div>
+            </div>
+            <div class=\"modal-footer\">
+                <a id='playerSave' href=\"#!\" class=\"modal-close waves-effect waves-green btn-flat\">Save Changes</a>
+            </div>
+        </div>
         ";
 }
 

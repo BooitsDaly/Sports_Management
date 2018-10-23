@@ -4,17 +4,25 @@ if(isset($_POST['call'])){
     $call = $_POST['call'];
     include('helper.php');
     include('./../DataLayer/User.class.php');
+
+    /**
+     * User Add
+     * verify data was sent
+     * sanatize data
+     * call database
+     * return values
+     */
     if($call == 'add'){
-        if(isset($_POST['username'])){
-            if(isset($_POST['password'])){
-                if(isset($_POST['role'])){
-                    if(isset($_POST['team'])){
-                        if(isset($_POST['league'])){
+        if(isset($_POST['username']) && $_POST['username'] != 'null' && $_POST['username'] != 'undefined'){
+            if(isset($_POST['password']) && $_POST['password'] != 'null' && $_POST['password'] != 'undefined'){
+                if(isset($_POST['role']) && $_POST['role'] != 'null' && $_POST['role'] != 'undefined'){
+                    if(isset($_POST['team']) && $_POST['team'] != 'null' && $_POST['team'] != 'undefined'){
+                        if(isset($_POST['league']) && $_POST['league'] != 'null' && $_POST['league'] != 'undefined'){
 
                             //all of the data is filled out do something
                             //get all of the data -- sanitize
                             $username = sanitizeString($_POST['username']);
-                            $password = sha1(sanitizeString($_POST['password']));
+                            $password = hash('sha256',sanitizeString($_POST['password']));
                             $role = sanitizeString($_POST['role']);
                             $team = sanitizeString($_POST['team']);
                             $league = sanitizeString($_POST['league']);
@@ -45,6 +53,13 @@ if(isset($_POST['call'])){
             errorMessage();
         }
 
+        /**
+         * User view
+         *
+         * sanatize data
+         * call database
+         * return values
+         */
     }elseif($call == 'view'){
         $db = new User();
         if($_SESSION['role'] == 1){
@@ -57,8 +72,15 @@ if(isset($_POST['call'])){
         $response = $db->getTable($data);
         echo $response;
 
+        /**
+         * User Delete
+         * verify data was sent
+         * sanatize data
+         * call database
+         * return values
+         */
     }elseif($call == 'delete'){
-        if(isset($_POST['username'])){
+        if(isset($_POST['username']) && $_POST['username'] != 'null' && $_POST['username'] != 'undefined'){
             $username = sanitizeString($_POST['username']);
             $db = new User();
             $result = $db->deleteUser($username);
@@ -67,17 +89,24 @@ if(isset($_POST['call'])){
             errorMessage();
         }
 
+        /**
+         * User edit
+         * verify data was sent
+         * sanatize data
+         * call database
+         * return values
+         */
     }elseif($call == 'edit'){
-        if(isset($_POST['newUser'])){
-            if(isset($_POST['password'])){
-                if(isset($_POST['role'])){
-                    if(isset($_POST['team'])){
-                        if(isset($_POST['league'])){
-                            if(isset($_POST['oldUser'])) {
+        if(isset($_POST['newUser']) && $_POST['newUser'] != 'null' && $_POST['newUser'] != 'undefined'){
+            if(isset($_POST['password']) && $_POST['password'] != 'null' && $_POST['password'] != 'undefined'){
+                if(isset($_POST['role']) && $_POST['role'] != 'null' && $_POST['role'] != 'undefined'){
+                    if(isset($_POST['team']) && $_POST['team'] != 'null' && $_POST['team'] != 'undefined'){
+                        if(isset($_POST['league']) && $_POST['league'] != 'null' && $_POST['league'] != 'undefined'){
+                            if(isset($_POST['oldUser']) && $_POST['oldUser'] != 'null' && $_POST['oldUser'] != 'undefined') {
                                 //all of the data is filled out do something
                                 //get all of the data -- sanitize
                                 $newName = sanitizeString($_POST['newUser']);
-                                $password = sha1(sanitizeString($_POST['password']));
+                                $password = hash('sha256',sanitizeString($_POST['password']));
                                 $role = sanitizeString($_POST['role']);
                                 $team = sanitizeString($_POST['team']);
                                 $league = sanitizeString($_POST['league']);
